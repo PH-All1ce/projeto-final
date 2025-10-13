@@ -32,3 +32,7 @@ class UsuarioForm(ModelForm):
             'senha' : forms.PasswordInput(attrs={'class': 'form-control' }),
             'endereco_entrega': forms.TextInput(attrs={'class': 'form-control' }),
         }
+
+class LoginForm(forms.Form):
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
