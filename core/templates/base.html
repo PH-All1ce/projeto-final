@@ -166,14 +166,8 @@
   <header>
     <div class="logo">AutoCenter</div>
     <div class="menu">
-      {% if request.session.tipo == "vendedor" %}
-        <a href="{% url 'painel' %}">Painel</a>
-        <a href="{% url 'logout' %}" class="btn">Sair</a>
-      {% elif request.session.tipo == "usuario" %}
-        <a href="{% url 'logout' %}" class="btn">Sair</a>
-      {% else %}
-        <a href="{% url 'login' %}" class="btn">Entrar</a>
-      {% endif %}
+      <a href="{% url 'registrar' %}" class="btn">Criar conta</a>
+      <a href="{% url 'login' %}" class="btn">Logar</a>
     </div>
   </header>
 

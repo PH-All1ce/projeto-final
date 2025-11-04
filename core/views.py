@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import *
+from django.http import HttpResponse
+from django.contrib.auth.models import Group
 
 # Create your views here.
 
@@ -12,23 +14,9 @@ def carros_listar(request):
     context = {'veiculos': veiculos}
     return render(request, "home.html", context)
 
-def login_fake(request):
-    if request.method == "POST":
-        email = request.POST.get("email")
-        senha = request.POST.get("senha")
-
-        if email == "vendedor@teste.com":
-            request.session["tipo"] = "vendedor"
-            return redirect("painel")
-        else:
-            request.session["tipo"] = "usuario"
-            return redirect("home")
-
-    return render(request, "login.html")
-
-def logout_fake(request):
-    request.session.flush()
-    return redirect("home")
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 def painel_vendedor(request):
     if request.session.get("tipo") == "vendedor":
@@ -74,3 +62,17 @@ def veiculo_criar(request):
         form = VeiculoForm()
 
     return render(request, "formveiculo.html", {'form': form})
+
+def registrar_cliente(request):
+    if request.method == 'POST':
+        form = RegistroClienteForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            tipo = form.cleaned_data['tipo_usuario']
+            user.save()
+            grupo = Group.objects.get(name=tipo)
+            user.groups.add(grupo)
+            return redirect('base')
+    else:
+        form = RegistroClienteForm()
+    return render(request, 'registro_usu.html', {'form': form})

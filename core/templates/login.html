@@ -3,14 +3,10 @@
 {% block title %}Login - AutoCenter{% endblock %}
 
 {% block content %}
-<div class="box">
-  <h2>Login</h2>
-  <form method="POST">
+<h2>Entrar</h2>
+<form method="post">
     {% csrf_token %}
-    <input type="email" name="email" placeholder="Digite seu e-mail" required>
-    <input type="password" name="senha" placeholder="Digite sua senha" required>
-    <button type="submit">Entrar</button>
-  </form>
-  <p><small>Use <b>vendedor@teste.com</b> para simular login de vendedor</small></p>
-</div>
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+</form>
 {% endblock %}

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import BaseUserManager, PermissionsMixin
 
 # Create your models here.
 
@@ -11,16 +12,23 @@ class TipoUsuario(models.Model):
     def __str__(self):
         return self.nome_tipo
 
-class Usuario(models.Model):
-    tipo_usuario = models.ForeignKey(TipoUsuario, on_delete=models.CASCADE)
-    nome = models.CharField(max_length=255)
-    cpf = models.CharField(max_length=11, unique=False)
-    email = models.EmailField(unique=False)
-    senha = models.CharField(max_length=255)
-    endereco_entrega = models.CharField(max_length=255, blank=True, null=True)
+class Cliente(AbstractUser):
+    cpf = models.CharField(max_length=11, unique=True, verbose_name="CPF")
+    endereco = models.CharField(max_length=255, blank=True, null=True)
+    nome_cidade = models.CharField(max_length=100, blank=True, null=True)
+    nome_bairro = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
-        return self.nome
+        return f"{self.username} - {self.cpf}"
+
+    def is_gerente(self):
+        return self.groups.filter(name="Gerente").exists()
+
+    def is_vendedor(self):
+        return self.groups.filter(name="Vendedor").exists()
+
+    def is_cliente(self):
+        return self.groups.filter(name="Cliente").exists()
 
 
 class Veiculo(models.Model):
@@ -46,7 +54,7 @@ class StatusCredito(models.Model):
 
 
 class Compra(models.Model):
-    cliente = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     veiculo = models.ForeignKey(Veiculo, on_delete=models.CASCADE)
     status_credito = models.ForeignKey(StatusCredito, on_delete=models.CASCADE)
 

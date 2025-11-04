@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Veiculo, Usuario
+from .models import Veiculo, Cliente
+from django.contrib.auth.forms import UserCreationForm
 
 class VeiculoForm(ModelForm):
 
@@ -19,10 +20,10 @@ class VeiculoForm(ModelForm):
             'foto_url': forms.URLInput(attrs={'class': 'form-control'}),
         }
 
-class UsuarioForm(ModelForm):
+class ClienteForm(ModelForm):
 
     class Meta:
-        model = Usuario
+        model = Cliente
         fields = '__all__'
         widgets = {
             'tipo_usuario' : forms.Select(attrs={'class': 'form-control' }),
@@ -32,3 +33,15 @@ class UsuarioForm(ModelForm):
             'senha' : forms.PasswordInput(attrs={'class': 'form-control' }),
             'endereco_entrega': forms.TextInput(attrs={'class': 'form-control' }),
         }
+
+class RegistroClienteForm(UserCreationForm):
+    TIPO_USUARIO_CHOICES = [
+        ('Cliente', 'Cliente'),
+        ('Vendedor', 'Vendedor'),
+        ('Gerente', 'Gerente'),
+    ]
+    tipo_usuario = forms.ChoiceField(choices=TIPO_USUARIO_CHOICES, label="Tipo de conta")
+
+    class Meta:
+        model = Cliente
+        fields = ['username', 'email', 'cpf', 'endereco', 'nome_cidade', 'nome_bairro', 'password1', 'password2', 'tipo_usuario']

@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from .models import *
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin
 
 @admin.register(TipoUsuario)
 class TipoUsuarioAdmin(admin.ModelAdmin):
@@ -8,10 +10,6 @@ class TipoUsuarioAdmin(admin.ModelAdmin):
     fields = ('nome_tipo',)
     
 
-@admin.register(Usuario)
-class UsuarioAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'cpf', 'email', 'tipo_usuario', 'endereco_entrega')
-    fields = ('nome', 'cpf', 'email', 'senha', 'tipo_usuario', 'endereco_entrega')
 
 @admin.register(Veiculo)
 class VeiculoAdmin(admin.ModelAdmin):
@@ -48,3 +46,4 @@ class AquisicaoAdmin(admin.ModelAdmin):
 class TransacaoAdmin(admin.ModelAdmin):
     list_display = ('compra', 'aquisicao', 'valor', 'tipo_transacao', 'data_transacao')
     fields = ('compra', 'aquisicao', 'valor', 'tipo_transacao')
+
