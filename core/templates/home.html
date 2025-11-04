@@ -18,7 +18,7 @@
             <span>📅 {{ veiculo.ano_modelo }}</span>
             <span class="price">R$ {{ veiculo.preco|floatformat:0|intcomma }}</span>
           </div>
-          <a href="#" class="btn-details">Ver Detalhes</a>
+          <a href="{% url 'veiculo_info' id=veiculo.id %}" class="btn-details">Ver Detalhes</a>
         </div>
       </div>
     {% endfor %}

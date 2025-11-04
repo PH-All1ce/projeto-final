@@ -1,7 +1,28 @@
 {% extends "base.html" %}
+{% load humanize %}
 
-{% block title %}Painel do Vendedor - AutoCenter{% endblock %}
+{% block title %}
+   Painel do Vendedor - AutoCenter
+{% endblock %}
 
 {% block content %}
 
+  <a href="{% url 'home' %}" class="btn-details">Voltar</a>
+
+  <h1>Informações do veículo</h1>
+
+  <p><strong>Nome:</strong> {{ veiculo.nome }}</p>
+  <p><strong>Marca:</strong> {{ veiculo.preco }}</p>
+  <p><strong>Ano:</strong> {{ veiculo.ano_modelo }}</p>
+  <p><strong>Placa:</strong> {{ veiculo.quilometragem }}</p>
+  <p><strong>Nome:</strong> {{ veiculo.potencia }}</p>
+  <p><strong>Marca:</strong> {{ veiculo.consumo }}</p>
+  <p><strong>Ano:</strong> {{ veiculo.historico_dono }}</p>
+  <p><strong>Placa:</strong> {{ veiculo.marca }}</p>
+  {% if veiculo.foto_url %}
+    <p><strong>Foto:</strong></p>
+    <img src="{{ veiculo.foto_url }}" alt="Foto do {{ veiculo.nome }}" style="max-width:400px; border-radius:10px;">
+  {% else %}
+    <p><em>Sem foto disponível</em></p>
+  {% endif %}
 {% endblock %}

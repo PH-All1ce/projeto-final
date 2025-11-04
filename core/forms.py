@@ -45,3 +45,6 @@ class RegistroClienteForm(UserCreationForm):
     class Meta:
         model = Cliente
         fields = ['username', 'email', 'cpf', 'endereco', 'nome_cidade', 'nome_bairro', 'password1', 'password2', 'tipo_usuario']
+class LoginForm(forms.Form):
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)
