@@ -4,12 +4,30 @@ from .models import *
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 
+@admin.register(Cliente)
+class ClienteAdmin(UserAdmin):
+    model = Cliente
+
+    list_display = ('username', 'cpf', 'email', 'is_staff', 'is_superuser', 'is_active')
+    search_fields = ('username', 'cpf', 'email')
+    ordering = ('username',)
+
+    fieldsets = UserAdmin.fieldsets + (
+        ('Informações adicionais', {
+            'fields': ('cpf', 'endereco', 'nome_cidade', 'nome_bairro')
+        }),
+    )
+
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        ('Informações adicionais', {
+            'fields': ('cpf', 'endereco', 'nome_cidade', 'nome_bairro')
+        }),
+    )
+
 @admin.register(TipoUsuario)
 class TipoUsuarioAdmin(admin.ModelAdmin):
     list_display = ('nome_tipo',)
     fields = ('nome_tipo',)
-    
-
 
 @admin.register(Veiculo)
 class VeiculoAdmin(admin.ModelAdmin):

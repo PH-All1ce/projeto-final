@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {% extends "base.html" %}
 
 {% block title %}Login - AutoCenter{% endblock %}
@@ -11,11 +10,9 @@
     <button type="submit">Login</button>
 </form>
 {% endblock %}
-=======
 <h2>Login</h2>
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
   <button type="submit">Entrar</button>
 </form>
->>>>>>> 25b9462e6d3e4ff0f5cb35773856305dd93bff5b
