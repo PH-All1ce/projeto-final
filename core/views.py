@@ -8,6 +8,11 @@ from .forms import VeiculoForm, LoginForm, RegistroClienteForm
 
 # --- LOGIN / LOGOUT / REGISTRO ---
 
+@login_required
+def meu_perfil(request):
+    user = request.user
+    return render(request, 'perfil.html', {'user': user})
+
 def login_view(request):
     if request.method == "POST":
         form = LoginForm(request.POST)

@@ -166,8 +166,13 @@
   <header>
     <div class="logo">AutoCenter</div>
     <div class="menu">
-      <a href="{% url 'registrar' %}" class="btn">Criar conta</a>
-      <a href="{% url 'login' %}" class="btn">Logar</a>
+      {% if user.is_authenticated %}
+        <li><a href="{% url 'meu_perfil' %}">Meu Perfil</a></li>
+        <li><a href="{% url 'logout' %}">Sair</a></li>
+      {% else %}
+        <li><a href="{% url 'login' %}">Login</a></li>
+        <li><a href="{% url 'registrar' %}">Criar Conta</a></li>
+      {% endif %}
     </div>
   </header>
 
