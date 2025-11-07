@@ -1,55 +1,30 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    {% if form.instance.pk %}Editar Veículo{% else %}Cadastrar Veículo{% endif %}
+{% endblock %}
+
 {% block content %}
-    <h2>Usando formulários</h2>
+<div class="form-container">
+    <h2 class="text-center mb-4">
+        {% if form.instance.pk %}Editar {{ form.instance.nome }}{% else %}Cadastrar Novo Veículo{% endif %}
+    </h2>
     <form method="post">
         {% csrf_token %}
 
-        <div class="mb-3">
-            <label for="nome" class="form-label">Nome do carro</label>
-            {{ form.nome }}
-        </div>
+        {% for field in form %}
+            <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field }} 
+                {% if field.errors %}
+                    <div class="alert alert-danger p-2 mt-1">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
 
-        <div class="mb-3">
-            <label for="preco" class="form-label">Preço</label>
-            {{ form.preco }}
-        </div>
-
-        <div class="mb-3">
-            <label for="modelo" class="form-label">Ano do modelo</label>
-            {{ form.ano_modelo }}
-        </div>
-
-        <div class="mb-3">
-            <label for="quilometragem" class="form-label">Quilometragem</label>
-            {{ form.quilometragem }}
-        </div>
-
-        <div class="mb-3">
-            <label for="potencia" class="form-label">Potência</label>
-            {{ form.potencia }}
-        </div>
-
-        <div class="mb-3">
-            <label for="consumo" class="form-label">Consumo</label>
-            {{ form.consumo }}
-        </div>
-
-        <div class="mb-3">
-            <label for="historico_dono" class="form-label">Histórico do dono</label>
-            {{ form.historico_dono }}
-        </div>
-
-        <div class="mb-3">
-            <label for="marca" class="form-label">Marca</label>
-            {{ form.marca }}
-        </div>
-
-        <div class="mb-3">
-            <label for="foto_url" class="form-label">Foto do carro</label>
-            {{ form.foto_url }}
-        </div>
-
-        <button type="submit" class="btn btn-primary">Enviar</button>
+        <button type="submit" class="btn btn-primary w-100 mt-4">
+            {% if form.instance.pk %}Salvar Alterações{% else %}Cadastrar Veículo{% endif %}
+        </button>
     </form>
+</div>
 {% endblock %}

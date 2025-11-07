@@ -3,17 +3,35 @@
 {% block title %}Meu Perfil{% endblock %}
 
 {% block content %}
-<h2>Meu Perfil</h2>
-<hr>
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">Meu Perfil</h2>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title mb-4">{{ user.username }} <span class="badge bg-secondary ms-2">{{ user.groups.all.0.name|default:"Cliente" }}</span></h4>
+                
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Nome Completo:</strong> {{ user.first_name|default:"Não informado" }} {{ user.last_name|default:"" }}</li>
+                    <li class="list-group-item"><strong>Email:</strong> {{ user.email|default:"Não informado" }}</li>
+                    <li class="list-group-item"><strong>CPF:</strong> {{ user.cpf|default:"Não informado" }}</li>
+                </ul>
 
-<p><strong>Usuário:</strong> {{ user.username }}</p>
-<p><strong>Nome:</strong> {{ user.first_name|default:"Não informado" }}</p>
-<p><strong>Sobrenome:</strong> {{ user.last_name|default:"Não informado" }}</p>
-<p><strong>Email:</strong> {{ user.email|default:"Não informado" }}</p>
-<p><strong>CPF:</strong> {{ user.cpf|default:"Não informado" }}</p>
-<p><strong>Endereço:</strong> {{ user.endereco|default:"Não informado" }}</p>
-<p><strong>Bairro:</strong> {{ user.nome_bairro|default:"Não informado" }}</p>
-<p><strong>Cidade:</strong> {{ user.nome_cidade|default:"Não informado" }}</p>
-<p><strong>Data de cadastro:</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
-<p><strong>Último login:</strong> {{ user.last_login|date:"d/m/Y H:i"|default:"Nunca" }}</p>
+                <h5 class="mt-4 mb-3">Informações de Endereço</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Endereço:</strong> {{ user.endereco|default:"Não informado" }}</li>
+                    <li class="list-group-item"><strong>Bairro:</strong> {{ user.nome_bairro|default:"Não informado" }}</li>
+                    <li class="list-group-item"><strong>Cidade:</strong> {{ user.nome_cidade|default:"Não informado" }}</li>
+                </ul>
+
+                <h5 class="mt-4 mb-3">Detalhes da Conta</h5>
+                 <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Data de Cadastro:</strong> {{ user.date_joined|date:"d/m/Y" }}</li>
+                    <li class="list-group-item"><strong>Último Login:</strong> {{ user.last_login|date:"d/m/Y H:i"|default:"Nunca" }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

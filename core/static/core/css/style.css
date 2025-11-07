@@ -1,75 +1,36 @@
+/* style.css (Novo Conteúdo) */
 
+/* Reset Básico */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Fundo */
 body {
-    background: #f7f9fc;
+    background: #f0f2f5; /* Fundo mais claro e suave */
     color: #333;
+    /* Fontes padrão do Bootstrap (system-ui) */
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    padding-top: 56px; /* Espaço para o navbar fixo */
 }
 
-header {
-    width: 100%;
-    background: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    padding: 15px 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* Header */
+/* Regras para header foram quase todas substituídas pelas classes bg-dark, navbar, etc. do Bootstrap */
+
+/* Main (Container principal) - Agora usando container e py-5 do Bootstrap */
+/* As regras de max-width e margin: auto foram assumidas pela classe container-xl do Bootstrap no base.html */
+
+/* Títulos */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: #1e2832; /* Cor mais escura para títulos */
 }
 
-header .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #007bff;
-}
-
-header .menu {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-header .menu a {
-    text-decoration: none;
-    color: #333;
-    font-size: 0.95rem;
-}
-
-.btn {
-    background: #28a745;
-    color: #fff;
-    padding: 8px 15px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: background 0.3s;
-}
-
-.btn:hover {
-    background: #218838;
-}
-
-main {
-    max-width: 1200px;
-    margin: 30px auto;
-    padding: 0 15px;
-}
-
-main h2 {
-    font-size: 1.6rem;
-    margin-bottom: 8px;
-}
-
-main p {
-    margin-bottom: 20px;
-    color: #666;
-}
-
+/* Cards (Manter e refinar) */
 .car-grid {
+    /* Mantido o seu grid existente */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
@@ -77,74 +38,68 @@ main p {
 
 .car-card {
     background: #fff;
-    border-radius: 10px;
+    border-radius: 12px; /* Borda mais suave */
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-    transition: transform 0.3s;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1); /* Sombra mais profunda e moderna */
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #e0e0e0;
 }
 
 .car-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px); /* Efeito "levitação" mais pronunciado */
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
 }
 
 .car-card img {
     width: 100%;
-    height: 180px;
+    height: 200px; /* Altura ligeiramente maior */
     object-fit: cover;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .car-card .info {
-    padding: 15px;
+    padding: 18px; /* Padding maior */
 }
 
 .car-card h3 {
-    font-size: 1.1rem;
-    margin-bottom: 8px;
+    font-size: 1.25rem;
+    margin-bottom: 5px;
+    color: #007bff; /* Título do carro em azul primário */
 }
 
 .car-card .year-price {
     display: flex;
     justify-content: space-between;
     margin-bottom: 15px;
-    font-size: 0.9rem;
-}
-
-.car-card .year-price span {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+    font-size: 0.95rem;
+    color: #6c757d; /* Cor secundária para informações */
 }
 
 .car-card .price {
-    color: #28a745;
+    color: #198754; /* Cor verde (sucesso) para o preço */
     font-weight: bold;
+    font-size: 1.1rem;
 }
 
-.btn-details {
-    display: block;
+/* Formulário de Detalhes (usado no formveiculo.html e outros) */
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.form-container h2 {
+    margin-bottom: 25px;
     text-align: center;
-    background: #007bff;
-    color: #fff;
-    padding: 10px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 0.9rem;
 }
 
-.btn-details:hover {
-    background: #0056b3;
-}
-
-@media (max-width: 768px) {
-    header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    }
-
-    header .menu {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+/* Responsividade (Ajuste para Navbar removido pois o Bootstrap lida com isso) */
+/* Mantido apenas para garantir que o container não fique muito grande em telas menores */
+@media (max-width: 1400px) {
+    .container-xl {
+        max-width: 1200px;
     }
 }

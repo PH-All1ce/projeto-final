@@ -27,7 +27,7 @@ def login_view(request):
                 print("Grupos:", user.groups.all())
                 print("É vendedor:", user.is_vendedor)
                 if user.has_perm('sua_app.change_veiculo'):
-                    return redirect('painel_vendedor')
+                    return redirect('painel')
                 return redirect('home')
             else:
                 messages.error(request, "username ou senha inválidos.")
@@ -85,7 +85,7 @@ def veiculo_editar(request, id):
         form = VeiculoForm(request.POST, request.FILES, instance=veiculo)
         if form.is_valid():
             form.save()
-            return redirect('painel_vendedor')
+            return redirect('painel')
     else:
         form = VeiculoForm(instance=veiculo)
     return render(request, 'formveiculo.html', {'form': form})
@@ -96,7 +96,7 @@ def veiculo_remover(request, id):
     veiculo = get_object_or_404(Veiculo, id=id)
     if request.method == 'POST':
         veiculo.delete()
-        return redirect('painel_vendedor')
+        return redirect('painel')
     return render(request, 'confirmar_remocao.html', {'veiculo': veiculo})
 
 def veiculos_infos(request, id):
