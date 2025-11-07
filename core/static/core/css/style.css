@@ -1,0 +1,150 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #f7f9fc;
+    color: #333;
+}
+
+header {
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+header .menu {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+header .menu a {
+    text-decoration: none;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.btn {
+    background: #28a745;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background: #218838;
+}
+
+main {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 15px;
+}
+
+main h2 {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+}
+
+main p {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.car-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.car-card {
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    transition: transform 0.3s;
+}
+
+.car-card:hover {
+    transform: translateY(-5px);
+}
+
+.car-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.car-card .info {
+    padding: 15px;
+}
+
+.car-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+}
+
+.car-card .year-price {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.car-card .year-price span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.car-card .price {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.btn-details {
+    display: block;
+    text-align: center;
+    background: #007bff;
+    color: #fff;
+    padding: 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.btn-details:hover {
+    background: #0056b3;
+}
+
+@media (max-width: 768px) {
+    header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    }
+
+    header .menu {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    }
+}

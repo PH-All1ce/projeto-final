@@ -17,16 +17,20 @@ def login_view(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data['email']
+            username = form.cleaned_data['username']
             senha = form.cleaned_data['password']
-            user = authenticate(request, username=email, password=senha)
+            user = authenticate(request, username=username, password=senha)
+            print("Usuário autenticado:", user)
             if user:
                 login(request, user)
+                print("Usuário logado:", user.username)
+                print("Grupos:", user.groups.all())
+                print("É vendedor:", user.is_vendedor)
                 if user.has_perm('sua_app.change_veiculo'):
                     return redirect('painel_vendedor')
                 return redirect('home')
             else:
-                messages.error(request, "E-mail ou senha inválidos.")
+                messages.error(request, "username ou senha inválidos.")
     else:
         form = LoginForm()
     return render(request, "login.html", {"form": form})
@@ -62,7 +66,7 @@ def carros_listar(request):
     return render(request, "home.html", {'veiculos': veiculos})
 
 @login_required
-@permission_required('sua_app.add_veiculo', login_url='/login/')
+@permission_required('core.add_veiculo', login_url='/login/')
 def veiculo_criar(request):
     if request.method == 'POST':
         form = VeiculoForm(request.POST, request.FILES)
@@ -74,7 +78,7 @@ def veiculo_criar(request):
     return render(request, "formveiculo.html", {'form': form})
 
 @login_required
-@permission_required('sua_app.change_veiculo', login_url='/login/')
+@permission_required('core.change_veiculo', login_url='/login/')
 def veiculo_editar(request, id):
     veiculo = get_object_or_404(Veiculo, id=id)
     if request.method == 'POST':
@@ -87,7 +91,7 @@ def veiculo_editar(request, id):
     return render(request, 'formveiculo.html', {'form': form})
 
 @login_required
-@permission_required('sua_app.delete_veiculo', login_url='/login/')
+@permission_required('core.delete_veiculo', login_url='/login/')
 def veiculo_remover(request, id):
     veiculo = get_object_or_404(Veiculo, id=id)
     if request.method == 'POST':
@@ -100,7 +104,7 @@ def veiculos_infos(request, id):
     return render(request, 'infos.html', {'veiculo': veiculo})
 
 @login_required
-@permission_required('sua_app.change_veiculo', login_url='/login/')
+@permission_required('core.change_veiculo', login_url='/login/')
 def painel_vendedor(request):
     veiculos = Veiculo.objects.all()
     return render(request, "painel.html", {"veiculos": veiculos})

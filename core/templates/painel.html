@@ -8,13 +8,17 @@
 
 <ul>
   <li><a href="{% url 'veiculo_criar' %}">Adicionar veículo</a></li>
-  <li><a href="{% url 'vei-list-rm' %}">Remover veículo</a></li>
 </ul>
 
 <h2>Seus Veículos</h2>
 <div class="car-grid">
   {% for veiculo in veiculos %}
     <div class="car-card">
+      <ul>
+        <li><a href="{% url 'veiculo_criar' %}">Adicionar veículo</a></li>
+        <li><a href="{% url 'vei-rm' id=veiculo.id %}">Remover veículo</a></li>
+      </ul>
+
       {% if veiculo.foto %}
         <img src="{{ veiculo.foto.url }}" alt="{{ veiculo.nome }}">
       {% else %}

@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.urls import path
 from core.views import *
-from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -11,7 +12,11 @@ urlpatterns = [
     path('painel/veiculo_criar/', veiculo_criar, name='veiculo_criar'),
     path('painel/veiculo_editar/<int:id>/', veiculo_editar, name='veiculo_editar'),
     path('registrar/', registrar_cliente, name='registrar'),
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('veiculo/<int:id>/', veiculos_infos, name='veiculos_infos'),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
     path('meu-perfil/', meu_perfil, name='meu_perfil'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.BASE_DIR / 'core' / 'static')

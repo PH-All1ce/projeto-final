@@ -21,12 +21,17 @@ class Cliente(AbstractUser):
     def __str__(self):
         return f"{self.username} - {self.cpf}"
 
+    USERNAME_FIELD = 'username'
+
+    @property
     def is_gerente(self):
         return self.groups.filter(name="Gerente").exists()
 
+    @property
     def is_vendedor(self):
         return self.groups.filter(name="Vendedor").exists()
 
+    @property
     def is_cliente(self):
         return self.groups.filter(name="Cliente").exists()
 
