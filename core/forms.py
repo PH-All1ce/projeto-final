@@ -49,3 +49,41 @@ class RegistroClienteForm(UserCreationForm):
 class LoginForm(forms.Form):
     username = forms.CharField(label="Usuário")
     password = forms.CharField(widget=forms.PasswordInput)
+
+class VeiculoFiltroForm(forms.Form):
+    
+    Marca = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Buscar por marca'
+        }),
+        label='Marca'
+    )
+    
+    ano_min = forms.IntegerField(
+        required=False,
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control',
+            'type': 'Ano mínimo'
+        }),
+        label='Ano do modelo'
+    )
+    
+    quilo_max = forms.IntegerField(
+        required=False,
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control',
+            'type': 'KM máxima'
+        }),
+        label= 'KM máxima'
+    )
+    
+    nome = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Buscar por Nome...'
+        }),
+        label='Nome do Carro'
+    )

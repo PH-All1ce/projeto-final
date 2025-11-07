@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from django.contrib.auth.models import Group
 from .models import Veiculo
-from .forms import VeiculoForm, LoginForm, RegistroClienteForm
+from .forms import VeiculoForm, LoginForm, RegistroClienteForm, VeiculoFiltroForm
 
 # --- LOGIN / LOGOUT / REGISTRO ---
 
@@ -63,7 +63,33 @@ def registrar_cliente(request):
 
 def carros_listar(request):
     veiculos = Veiculo.objects.all()
-    return render(request, "home.html", {'veiculos': veiculos})
+    form = VeiculoFiltroForm(request.GET)
+    
+    if form.is_valid():
+        nome = form.cleaned_data.get('nome')
+        marca = form.cleaned_data.get('marca')
+        ano_min = form.cleaned_data.get('ano_min')
+        preco_max = form.cleaned_data.get('preco_max')
+        quilometragem_max = form.cleaned_data.get('quilometragem_max')
+        
+        if nome:
+            veiculos = veiculos.filter(nome__icontains=nome)
+        
+        if marca:
+            veiculos = veiculos.filter(marca__icontains=marca)
+            
+        if ano_min:
+            veiculos = veiculos.filter(ano_modelo__gte=ano_min) 
+            
+        if preco_max:
+            veiculos = veiculos.filter(preco__lte=preco_max) 
+            
+        if quilometragem_max:
+            veiculos = veiculos.filter(quilometragem__lte=quilometragem_max)
+            
+    veiculos = veiculos.order_by('-ano_modelo', 'preco')
+
+    return render(request, "home.html", {'veiculos': veiculos, 'form_filtro': form})
 
 @login_required
 @permission_required('core.add_veiculo', login_url='/login/')
