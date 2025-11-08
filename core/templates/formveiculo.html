@@ -1,30 +1,138 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block title %}
-    {% if form.instance.pk %}Editar Veículo{% else %}Cadastrar Veículo{% endif %}
+{% if form.instance.pk %}Editar Veículo{% else %}Cadastrar Novo Veículo{% endif %}
 {% endblock %}
 
 {% block content %}
-<div class="form-container">
-    <h2 class="text-center mb-4">
-        {% if form.instance.pk %}Editar {{ form.instance.nome }}{% else %}Cadastrar Novo Veículo{% endif %}
-    </h2>
-    <form method="post">
-        {% csrf_token %}
 
-        {% for field in form %}
-            <div class="mb-3">
-                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                {{ field }} 
-                {% if field.errors %}
-                    <div class="alert alert-danger p-2 mt-1">{{ field.errors }}</div>
-                {% endif %}
+<div class="row justify-content-center my-5">
+    <div class="col-lg-8 col-md-10">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-header bg-white p-4">
+                <h1 class="h3 text-center fw-bold text-dark">
+                    {% if form.instance.pk %}
+                        🖊️ Editar {{ form.instance.nome }}
+                    {% else %}
+                        ➕ Cadastrar Novo Veículo
+                    {% endif %}
+                </h1>
+                <p class="text-center text-muted mb-0">Preencha os dados do veículo com precisão.</p>
             </div>
-        {% endfor %}
+            
+            <div class="card-body p-4 p-md-5">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="row g-4">
+                        
+                        {% for field in form %}
+                            {% if field.name == 'nome' or field.name == 'marca' %}
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        {{ field }}
+                                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                        {% if field.errors %}
+                                            <div class="invalid-feedback d-block">{{ field.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
 
-        <button type="submit" class="btn btn-primary w-100 mt-4">
-            {% if form.instance.pk %}Salvar Alterações{% else %}Cadastrar Veículo{% endif %}
-        </button>
-    </form>
+                        {% for field in form %}
+                            {% if field.name == 'ano_modelo' or field.name == 'quilometragem' %}
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        {{ field }}
+                                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                        {% if field.errors %}
+                                            <div class="invalid-feedback d-block">{{ field.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% for field in form %}
+                            {% if field.name == 'potencia' or field.name == 'consumo' %}
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        {{ field }}
+                                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                        {% if field.errors %}
+                                            <div class="invalid-feedback d-block">{{ field.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% for field in form %}
+                            {% if field.name == 'preco' %}
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        {{ field }}
+                                        <label for="{{ field.id_for_label }}">{{ field.label }} (R$)</label>
+                                        {% if field.errors %}
+                                            <div class="invalid-feedback d-block">{{ field.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% elif field.name == 'foto_url' %}
+                                <div class="col-md-6">
+                                    <label for="{{ field.id_for_label }}" class="form-label text-muted ms-1 mb-1">Link da Foto (URL)</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <div class="invalid-feedback d-block">{{ field.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% for field in form %}
+                            {% if field.name == 'descricao' %}
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        {{ field }}
+                                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                        {% if field.errors %}
+                                            <div class="invalid-feedback d-block">{{ field.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% for field in form %}
+                            {% if field.name == 'historico_dono' %}
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        {{ field }}
+                                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                        {% if field.errors %}
+                                            <div class="invalid-feedback d-block">{{ field.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+
+                        <div class="col-12 mt-4 d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'painel' %}" class="btn btn-outline-secondary btn-lg rounded-pill px-4">Cancelar</a>
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill px-4">
+                                {% if form.instance.pk %}
+                                    Salvar Alterações
+                                {% else %}
+                                    Cadastrar Veículo
+                                {% endif %}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

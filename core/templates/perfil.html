@@ -1,36 +1,109 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load humanize %}
 
-{% block title %}Meu Perfil{% endblock %}
+{% block title %}Meu Perfil - AutoCenter{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-lg-8">
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white">
-                <h2 class="mb-0">Meu Perfil</h2>
-            </div>
-            <div class="card-body">
-                <h4 class="card-title mb-4">{{ user.username }} <span class="badge bg-secondary ms-2">{{ user.groups.all.0.name|default:"Cliente" }}</span></h4>
+
+<div class="row justify-content-center my-5">
+    <div class="col-lg-10 col-xl-8">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-4 p-md-5">
                 
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><strong>Nome Completo:</strong> {{ user.first_name|default:"Não informado" }} {{ user.last_name|default:"" }}</li>
-                    <li class="list-group-item"><strong>Email:</strong> {{ user.email|default:"Não informado" }}</li>
-                    <li class="list-group-item"><strong>CPF:</strong> {{ user.cpf|default:"Não informado" }}</li>
+                <div class="text-center mb-5">
+                    <h1 class="display-5 fw-bold text-dark">
+                        👋 Bem-vindo(a), {{ user.username }}!
+                    </h1>
+                    <p class="lead text-muted">Seu painel de controle e informações de conta.</p>
+                </div>
+                
+                <hr class="mb-4">
+
+                <div class="row mb-5">
+                    <div class="col-md-6 border-end">
+                        <h4 class="fw-bold mb-3">Informações de Contato</h4>
+                        <p class="mb-1"><small class="text-muted d-block">Nome Completo:</small> <strong>{{ user.nome }}</strong></p>
+                        <p class="mb-1"><small class="text-muted d-block">E-mail:</small> <strong>{{ user.email }}</strong></p>
+                        <p class="mb-1"><small class="text-muted d-block">CPF:</small> <strong>{{ user.cpf }}</strong></p>
+                    </div>
+                    <div class="col-md-6 pt-3 pt-md-0">
+                        <h4 class="fw-bold mb-3">Detalhes de Localização</h4>
+                        <p class="mb-1"><small class="text-muted d-block">Endereço:</small> <strong>{{ user.endereco }}</strong></p>
+                        <p class="mb-1"><small class="text-muted d-block">Bairro:</small> <strong>{{ user.nome_bairro }}</strong></p>
+                        <p class="mb-1"><small class="text-muted d-block">Cidade:</small> <strong>{{ user.nome_cidade }}</strong></p>
+                    </div>
+                </div>
+
+                <ul class="nav nav-tabs nav-fill" id="profileTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="saldo-tab" data-bs-toggle="tab" data-bs-target="#saldo-pane" type="button" role="tab" aria-controls="saldo-pane" aria-selected="true">
+                            💰 Saldo e Fundos
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="compras-tab" data-bs-toggle="tab" data-bs-target="#compras-pane" type="button" role="tab" aria-controls="compras-pane" aria-selected="false">
+                            🚗 Meus Veículos Comprados
+                        </button>
+                    </li>
                 </ul>
 
-                <h5 class="mt-4 mb-3">Informações de Endereço</h5>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><strong>Endereço:</strong> {{ user.endereco|default:"Não informado" }}</li>
-                    <li class="list-group-item"><strong>Bairro:</strong> {{ user.nome_bairro|default:"Não informado" }}</li>
-                    <li class="list-group-item"><strong>Cidade:</strong> {{ user.nome_cidade|default:"Não informado" }}</li>
-                </ul>
+                <div class="tab-content border border-top-0 p-4 rounded-bottom-4 bg-light" id="profileTabsContent">
+                    
+                    <div class="tab-pane fade show active" id="saldo-pane" role="tabpanel" aria-labelledby="saldo-tab" tabindex="0">
+                        <h4 class="mb-3 fw-bold">Seu Saldo Atual</h4>
+                        <p class="display-3 text-success fw-bolder mb-4">
+                            R$ {{ user.saldo|floatformat:2|intcomma }}
+                        </p>
+                        
+                        <div class="p-3 bg-white rounded shadow-sm">
+                            <h5 class="mb-3">Definir Saldo para Simulação</h5>
+                            <form method="post" action="{% url 'meu_perfil' %}">
+                                {% csrf_token %}
+                                
+                                <div class="row g-3">
+                                    <div class="col-md-8">
+                                        {% for field in saldo_form %}
+                                            <label for="{{ field.id_for_label }}" class="form-label visually-hidden">{{ field.label }}</label>
+                                            {{ field }}
+                                            {% if field.errors %}
+                                                <div class="invalid-feedback d-block">{{ field.errors }}</div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-4 d-grid">
+                                        <button type="submit" class="btn btn-primary">Atualizar Saldo</button>
+                                    </div>
+                                </div>
+                                <small class="text-muted mt-2 d-block">Definir um novo valor substitui o saldo atual.</small>
+                            </form>
+                        </div>
+                    </div>
 
-                <h5 class="mt-4 mb-3">Detalhes da Conta</h5>
-                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><strong>Data de Cadastro:</strong> {{ user.date_joined|date:"d/m/Y" }}</li>
-                    <li class="list-group-item"><strong>Último Login:</strong> {{ user.last_login|date:"d/m/Y H:i"|default:"Nunca" }}</li>
-                </ul>
-            </div>
+                    <div class="tab-pane fade" id="compras-pane" role="tabpanel" aria-labelledby="compras-tab" tabindex="0">
+                        <h4 class="mb-4 fw-bold">Histórico de Veículos Adquiridos</h4>
+                        
+                        {% if comprados %}
+                            <ul class="list-group">
+                                {% for veiculo in comprados %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">{{ veiculo.nome }} ({{ veiculo.marca }})</h6>
+                                            <small class="text-muted">Ano: {{ veiculo.ano_modelo }} | KM: {{ veiculo.quilometragem|intcomma }}</small>
+                                        </div>
+                                        <span class="badge bg-success fs-6">
+                                            R$ {{ veiculo.preco|floatformat:0|intcomma }}
+                                        </span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <div class="alert alert-info text-center">
+                                Você ainda não adquiriu nenhum veículo.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                </div>
         </div>
     </div>
 </div>
