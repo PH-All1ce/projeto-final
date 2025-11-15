@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import Group
 from .models import Veiculo
 from .forms import VeiculoForm, LoginForm, RegistroClienteForm, VeiculoFiltroForm
+from django.contrib.auth import logout
 
 # --- LOGIN / LOGOUT / REGISTRO ---
 
@@ -20,17 +21,13 @@ def login_view(request):
             username = form.cleaned_data['username']
             senha = form.cleaned_data['password']
             user = authenticate(request, username=username, password=senha)
-            print("Usuário autenticado:", user)
             if user:
                 login(request, user)
-                print("Usuário logado:", user.username)
-                print("Grupos:", user.groups.all())
-                print("É vendedor:", user.is_vendedor)
-                if user.has_perm('sua_app.change_veiculo'):
+                if user.has_perm('core.change_veiculo'):
                     return redirect('painel')
                 return redirect('home')
             else:
-                messages.error(request, "username ou senha inválidos.")
+                messages.error(request, "Usuário ou senha inválidos.")
     else:
         form = LoginForm()
     return render(request, "login.html", {"form": form})
@@ -53,7 +50,9 @@ def registrar_cliente(request):
             messages.success(request, f"Sua conta de {tipo} foi criada com sucesso! Faça login para continuar.")
             return redirect('login')
         else:
-            print(form.errors)
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field}: {error}")
     else:
         form = RegistroClienteForm()
     
@@ -67,16 +66,12 @@ def carros_listar(request):
     
     if form.is_valid():
         nome = form.cleaned_data.get('nome')
-        marca = form.cleaned_data.get('marca')
         ano_min = form.cleaned_data.get('ano_min')
         preco_max = form.cleaned_data.get('preco_max')
         quilometragem_max = form.cleaned_data.get('quilometragem_max')
         
         if nome:
             veiculos = veiculos.filter(nome__icontains=nome)
-        
-        if marca:
-            veiculos = veiculos.filter(marca__icontains=marca)
             
         if ano_min:
             veiculos = veiculos.filter(ano_modelo__gte=ano_min) 
@@ -98,7 +93,10 @@ def veiculo_criar(request):
         form = VeiculoForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            messages.success(request, "Veículo criado com sucesso!")
+            return redirect('painel')
+        else:
+            messages.error(request, "Erro ao criar veículo. Verifique os campos.")
     else:
         form = VeiculoForm()
     return render(request, "formveiculo.html", {'form': form})
@@ -111,7 +109,10 @@ def veiculo_editar(request, id):
         form = VeiculoForm(request.POST, request.FILES, instance=veiculo)
         if form.is_valid():
             form.save()
+            messages.success(request, "Veículo atualizado com sucesso!")
             return redirect('painel')
+        else:
+            messages.error(request, "Erro ao atualizar veículo.")
     else:
         form = VeiculoForm(instance=veiculo)
     return render(request, 'formveiculo.html', {'form': form})
@@ -122,6 +123,7 @@ def veiculo_remover(request, id):
     veiculo = get_object_or_404(Veiculo, id=id)
     if request.method == 'POST':
         veiculo.delete()
+        messages.success(request, "Veículo removido com sucesso!")
         return redirect('painel')
     return render(request, 'confirmar_remocao.html', {'veiculo': veiculo})
 
@@ -134,3 +136,21 @@ def veiculos_infos(request, id):
 def painel_vendedor(request):
     veiculos = Veiculo.objects.all()
     return render(request, "painel.html", {"veiculos": veiculos})
+
+@login_required
+def deletar_conta(request):
+    """
+    View para deletar a conta do usuário autenticado
+    """
+    if request.method == 'POST':
+        user = request.user
+        username = user.username
+        
+        # Deleta o usuário
+        user.delete()
+        
+        # Faz logout e redireciona
+        messages.success(request, f'Conta {username} foi deletada com sucesso!')
+        return redirect('home')
+    
+    return render(request, 'deletar_conta.html')

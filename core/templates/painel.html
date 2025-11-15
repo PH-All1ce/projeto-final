@@ -4,42 +4,79 @@
 {% block title %}Painel do Vendedor - AutoCenter{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">Painel do Vendedor</h1>
 
-<div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-    <h2 class="h3 mb-0">Gerenciar Veículos</h2>
-    <a href="{% url 'veiculo_criar' %}" class="btn btn-success">
-        + Adicionar Novo Veículo
-    </a>
-</div>
+{# ...existing code... #}
 
-<div class="car-grid">
-    {% for veiculo in veiculos %}
-        <div class="car-card">
-            <img src="{{ veiculo.foto_url|default:'https://via.placeholder.com/400x200.png?text=Sem+Foto' }}" alt="{{ veiculo.nome }}" class="img-fluid">
-            
-            <div class="info">
-                <h3>{{ veiculo.nome }}</h3>
-                
-                <div class="year-price mb-2">
-                    <span class="text-muted">📅 {{ veiculo.ano_modelo }}</span>
-                    <span class="price text-success">R$ {{ veiculo.preco|floatformat:0|intcomma }}</span>
+<main class="vendedor-content">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+        <div>
+            <h1 class="h2 mb-0">Gerenciar Veículos</h1>
+            <p class="text-muted small mt-1">Controle todos os seus veículos cadastrados</p>
+        </div>
+        <a href="{% url 'veiculo_criar' %}" class="btn btn-success btn-lg">
+            <i class="fas fa-plus"></i> Adicionar Novo Veículo
+        </a>
+    </div>
+
+    <div class="car-grid">
+        {% for veiculo in veiculos %}
+            <div class="car-card">
+                <div class="car-image-container">
+                    <img src="{{ veiculo.foto_url|default:'https://via.placeholder.com/400x200.png?text=Sem+Foto' }}" alt="{{ veiculo.nome }}" class="img-fluid">
                 </div>
+                
+                <div class="info">
+                    <h3>{{ veiculo.nome }}</h3>
+                    
+                    <div class="year-price mb-3">
+                        <span class="text-muted small">📅 {{ veiculo.ano_modelo }}</span>
+                        <span class="price text-success fw-bold">R$ {{ veiculo.preco|floatformat:0|intcomma }}</span>
+                    </div>
 
-                <div class="d-grid gap-2 mt-3">
-                    <a href="{% url 'veiculo_editar' id=veiculo.id %}" class="btn btn-warning btn-sm">
-                        <i class="fas fa-edit"></i> Editar
-                    </a>
-                    <a href="{% url 'vei-rm' id=veiculo.id %}" class="btn btn-danger btn-sm">
-                        <i class="fas fa-trash-alt"></i> Remover
-                    </a>
+                    <div class="vehicle-details small text-muted mb-3">
+                        <p><i class="fas fa-road"></i> {{ veiculo.quilometragem|intcomma }} km</p>
+                        <p><i class="fas fa-bolt"></i> {{ veiculo.potencia }}</p>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'veiculo_editar' id=veiculo.id %}" class="btn btn-outline-warning btn-sm">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a href="{% url 'vei-rm' id=veiculo.id %}" class="btn btn-outline-danger btn-sm">
+                            <i class="fas fa-trash-alt"></i> Remover
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    {% empty %}
-        <div class="col-12 text-center py-5">
-            <p class="lead">Nenhum veículo cadastrado no momento. <a href="{% url 'veiculo_criar' %}">Adicione um novo!</a></p>
-        </div>
-    {% endfor %}
-</div>
+        {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-inbox" style="font-size: 3rem; color: #ccc;"></i>
+                <p class="lead mt-3">Nenhum veículo cadastrado no momento.</p>
+                <a href="{% url 'veiculo_criar' %}" class="btn btn-primary mt-3">Adicione um novo!</a>
+            </div>
+        {% endfor %}
+    </div>
+</main>
+
+{# ...existing code... #}
+
+<style>
+/* tornar conteúdo full-width (remover grid da sidebar) */
+.vendedor-content {
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-top: 20px;
+}
+
+/* manter estilos de grid de cards */
+.car-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+</style>
+
 {% endblock %}

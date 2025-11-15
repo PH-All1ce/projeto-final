@@ -1,89 +1,135 @@
-from django.forms import ModelForm
 from django import forms
-from .models import Veiculo, Cliente
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .models import Veiculo, Cliente
 
-class VeiculoForm(ModelForm):
-
-    class Meta:
-        model = Veiculo
-        fields = '__all__'
-        widgets = {
-            'nome' : forms.TextInput(attrs={'class': 'form-control' }),
-            'preco' : forms.NumberInput(attrs={'class': 'form-control' }),
-            'ano_modelo' : forms.NumberInput(attrs={'class': 'form-control' }),
-            'quilometragem': forms.NumberInput(attrs={'class': 'form-control' }),
-            'potencia': forms.TextInput(attrs={'class': 'form-control' }),
-            'consumo': forms.TextInput(attrs={'class': 'form-control' }),
-            'historico_dono': forms.Textarea(attrs={'class': 'form-control' }),
-            'marca': forms.TextInput(attrs={'class': 'form-control' }),
-            'foto_url': forms.URLInput(attrs={'class': 'form-control'}),
-        }
-
-class ClienteForm(ModelForm):
-
-    class Meta:
-        model = Cliente
-        fields = '__all__'
-        widgets = {
-            'tipo_usuario' : forms.Select(attrs={'class': 'form-control' }),
-            'nome' : forms.TextInput(attrs={'class': 'form-control' }),
-            'cpf' : forms.TextInput(attrs={'class': 'form-control' }),
-            'email' : forms.EmailInput(attrs={'class': 'form-control' }),
-            'senha' : forms.PasswordInput(attrs={'class': 'form-control' }),
-            'endereco_entrega': forms.TextInput(attrs={'class': 'form-control' }),
-        }
+class LoginForm(forms.Form):
+    username = forms.CharField(
+        label="Nome de Usuário",
+        max_length=150,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    password = forms.CharField(
+        label="Senha",
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
 
 class RegistroClienteForm(UserCreationForm):
-    TIPO_USUARIO_CHOICES = [
-        ('Cliente', 'Cliente'),
-        ('Vendedor', 'Vendedor'),
-        ('Gerente', 'Gerente'),
-    ]
-    tipo_usuario = forms.ChoiceField(choices=TIPO_USUARIO_CHOICES, label="Tipo de conta")
+    email = forms.EmailField(
+        label="Email",
+        widget=forms.EmailInput(attrs={'class': 'form-control'})
+    )
+    first_name = forms.CharField(
+        label="Primeiro Nome",
+        max_length=150,
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    last_name = forms.CharField(
+        label="Último Nome",
+        max_length=150,
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    cpf = forms.CharField(
+        label="CPF",
+        max_length=11,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '00000000000'})
+    )
+    tipo_usuario = forms.ChoiceField(
+        choices=[('Cliente', 'Cliente'), ('Vendedor', 'Vendedor')],
+        label="Tipo de Usuário",
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
 
     class Meta:
         model = Cliente
-        fields = ['username', 'email', 'cpf', 'endereco', 'nome_cidade', 'nome_bairro', 'password1', 'password2', 'tipo_usuario']
+        fields = ('username', 'email', 'first_name', 'last_name', 'cpf', 'password1', 'password2', 'tipo_usuario')
+        labels = {
+            'username': 'Nome de Usuário',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['class'] = 'form-control'
+        self.fields['password1'].label = 'Senha'
+        self.fields['password1'].widget.attrs['class'] = 'form-control'
+        self.fields['password1'].help_text = 'Mínimo 8 caracteres, com letras e números.'
         
-class LoginForm(forms.Form):
-    username = forms.CharField(label="Usuário")
-    password = forms.CharField(widget=forms.PasswordInput)
+        self.fields['password2'].label = 'Confirmar Senha'
+        self.fields['password2'].widget.attrs['class'] = 'form-control'
+        self.fields['password2'].help_text = 'Digite a mesma senha novamente.'
+
+    def clean_password1(self):
+        password1 = self.cleaned_data.get('password1')
+        if len(password1) < 8:
+            raise forms.ValidationError('A senha deve ter no mínimo 8 caracteres.')
+        if not any(char.isdigit() for char in password1):
+            raise forms.ValidationError('A senha deve conter pelo menos um número.')
+        if not any(char.isalpha() for char in password1):
+            raise forms.ValidationError('A senha deve conter pelo menos uma letra.')
+        return password1
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError('As senhas não correspondem.')
+        return password2
+
+    def clean_cpf(self):
+        cpf = self.cleaned_data.get('cpf')
+        if len(cpf) != 11:
+            raise forms.ValidationError('CPF deve conter 11 dígitos.')
+        if not cpf.isdigit():
+            raise forms.ValidationError('CPF deve conter apenas números.')
+        return cpf
+
+class VeiculoForm(forms.ModelForm):
+    class Meta:
+        model = Veiculo
+        fields = ('nome', 'marca', 'preco', 'ano_modelo', 'quilometragem', 'potencia', 'consumo', 'historico_dono', 'foto_url')
+        labels = {
+            'nome': 'Nome do Veículo',
+            'marca': 'Marca',
+            'preco': 'Preço (R$)',
+            'ano_modelo': 'Ano do Modelo',
+            'quilometragem': 'Quilometragem (km)',
+            'potencia': 'Potência',
+            'consumo': 'Consumo (km/l)',
+            'historico_dono': 'Histórico do Dono',
+            'foto_url': 'URL da Foto',
+        }
+        widgets = {
+            'nome': forms.TextInput(attrs={'class': 'form-control'}),
+            'marca': forms.TextInput(attrs={'class': 'form-control'}),
+            'preco': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+            'ano_modelo': forms.NumberInput(attrs={'class': 'form-control'}),
+            'quilometragem': forms.NumberInput(attrs={'class': 'form-control'}),
+            'potencia': forms.TextInput(attrs={'class': 'form-control'}),
+            'consumo': forms.TextInput(attrs={'class': 'form-control'}),
+            'historico_dono': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'foto_url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Cole a URL da imagem'}),
+        }
 
 class VeiculoFiltroForm(forms.Form):
-    
-    Marca = forms.CharField(
-        required=False,
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Buscar por marca'
-        }),
-        label='Marca'
-    )
-    
-    ano_min = forms.IntegerField(
-        required=False,
-        widget=forms.NumberInput(attrs={
-            'class': 'form-control',
-            'type': 'Ano mínimo'
-        }),
-        label='Ano do modelo'
-    )
-    
-    quilo_max = forms.IntegerField(
-        required=False,
-        widget=forms.NumberInput(attrs={
-            'class': 'form-control',
-            'type': 'KM máxima'
-        }),
-        label= 'KM máxima'
-    )
-    
     nome = forms.CharField(
+        label='Nome do Veículo',
         required=False,
-        widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Buscar por Nome...'
-        }),
-        label='Nome do Carro'
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: Fiat Uno'})
+    )
+    ano_min = forms.IntegerField(
+        label='Ano Mínimo',
+        required=False,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ex: 2020'})
+    )
+    preco_max = forms.DecimalField(
+        label='Preço Máximo (R$)',
+        required=False,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ex: 50000', 'step': '1000'})
+    )
+    quilometragem_max = forms.IntegerField(
+        label='Quilometragem Máxima (km)',
+        required=False,
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ex: 100000'})
     )

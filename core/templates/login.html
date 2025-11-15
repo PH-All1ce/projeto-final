@@ -1,29 +1,46 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
-{% block title %}Login - AutoCenter{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block content %}
-<div class="form-container">
-    <h2 class="text-center mb-4">Acesse sua Conta</h2>
-    <form method="post">
-        {% csrf_token %}
-
-        {% for field in form %}
-        <div class="mb-3">
-            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-            {{ field.errors }}
-            {{ field }}
-            {% if field.help_text %}
-                <small class="form-text text-muted">{{ field.help_text }}</small>
-            {% endif %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Entrar</h2>
+                </div>
+                <div class="card-body p-4">
+                    {% if messages %}
+                        {% for message in messages %}
+                            {# Não exibe mensagens do tipo 'success' dentro do card para evitar alertas duplicados/indesejados #}
+                            {% if 'success' not in message.tags %}
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">{{ form.username.label }}</label>
+                            {{ form.username }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_password" class="form-label">{{ form.password.label }}</label>
+                            {{ form.password }}
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                    </form>
+                    
+                    <hr>
+                    <p class="text-center">Não tem conta? <a href="{% url 'registro' %}">Criar uma</a></p>
+                </div>
+            </div>
         </div>
-        {% endfor %}
-
-        <button type="submit" class="btn btn-primary w-100 mt-3">Entrar</button>
-        
-        <p class="text-center mt-3 mb-0">
-            Ainda não tem conta? <a href="{% url 'registrar' %}" class="text-info">Cadastre-se aqui</a>
-        </p>
-    </form>
+    </div>
 </div>
 {% endblock %}

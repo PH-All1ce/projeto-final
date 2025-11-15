@@ -24,6 +24,16 @@
                 
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        {% if user.is_authenticated %}
+                            {% if user.is_vendedor or user.is_gerente %}
+                                <li class="nav-item">
+                                    <a class="nav-link btn btn-warning btn-sm text-dark px-3 ms-lg-2" href="{% url 'painel' %}">
+                                        Painel Vendedor
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                        
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'home' %}">Catálogo</a>
                         </li>
@@ -32,13 +42,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'meu_perfil' %}">Meu Perfil</a>
                             </li>
-                            {% if user.is_vendedor or user.is_gerente %}
-                                <li class="nav-item">
-                                    <a class="nav-link btn btn-warning btn-sm text-dark px-3 ms-lg-2" href="{% url 'painel' %}">
-                                        Painel Vendedor
-                                    </a>
-                                </li>
-                            {% endif %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'logout' %}">Sair</a>
                             </li>

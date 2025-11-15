@@ -1,105 +1,124 @@
-/* style.css (Novo Conteúdo) */
-
-/* Reset Básico */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Fundo */
 body {
-    background: #f0f2f5; /* Fundo mais claro e suave */
-    color: #333;
-    /* Fontes padrão do Bootstrap (system-ui) */
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    padding-top: 56px; /* Espaço para o navbar fixo */
+    padding-top: 0 !important;
 }
 
-/* Header */
-/* Regras para header foram quase todas substituídas pelas classes bg-dark, navbar, etc. do Bootstrap */
+/* Espaçamento correto após navbar */
+.navbar {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
 
-/* Main (Container principal) - Agora usando container e py-5 do Bootstrap */
-/* As regras de max-width e margin: auto foram assumidas pela classe container-xl do Bootstrap no base.html */
+/* Melhorar formulários */
+.form-control, .form-select {
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    padding: 10px 12px;
+    font-size: 14px;
+}
 
-/* Títulos */
-h1, h2, h3, h4, h5, h6 {
+.form-control:focus, .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0;
     font-weight: 600;
-    color: #1e2832; /* Cor mais escura para títulos */
+    padding: 1rem 1.25rem;
 }
 
-/* Cards (Manter e refinar) */
-.car-grid {
-    /* Mantido o seu grid existente */
+/* Layout Vendedor - Painel à Esquerda */
+.vendedor-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: 280px 1fr;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.vendedor-sidebar {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    height: fit-content;
+}
+
+.vendedor-sidebar a {
+    display: block;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.vendedor-sidebar a:hover {
+    background: #f0f2f5;
+    transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+    .vendedor-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Melhorar grid de carros */
+.car-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
+    margin-top: 30px;
 }
 
 .car-card {
     background: #fff;
-    border-radius: 12px; /* Borda mais suave */
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1); /* Sombra mais profunda e moderna */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     transition: transform 0.3s, box-shadow 0.3s;
-    border: 1px solid #e0e0e0;
 }
 
 .car-card:hover {
-    transform: translateY(-8px); /* Efeito "levitação" mais pronunciado */
-    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 
 .car-card img {
     width: 100%;
-    height: 200px; /* Altura ligeiramente maior */
+    height: 200px;
     object-fit: cover;
-    border-bottom: 1px solid #f0f0f0;
 }
 
 .car-card .info {
-    padding: 18px; /* Padding maior */
+    padding: 15px;
 }
 
-.car-card h3 {
-    font-size: 1.25rem;
-    margin-bottom: 5px;
-    color: #007bff; /* Título do carro em azul primário */
+/* Mensagens de erro */
+.alert {
+    border-radius: 8px;
+    border: none;
+    animation: fadeOut 2s ease-in-out 2s forwards;
 }
 
-.car-card .year-price {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-    font-size: 0.95rem;
-    color: #6c757d; /* Cor secundária para informações */
+.text-danger {
+    color: #dc3545;
+    font-size: 13px;
 }
 
-.car-card .price {
-    color: #198754; /* Cor verde (sucesso) para o preço */
-    font-weight: bold;
-    font-size: 1.1rem;
-}
-
-/* Formulário de Detalhes (usado no formveiculo.html e outros) */
-.form-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 30px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-}
-
-.form-container h2 {
-    margin-bottom: 25px;
-    text-align: center;
-}
-
-/* Responsividade (Ajuste para Navbar removido pois o Bootstrap lida com isso) */
-/* Mantido apenas para garantir que o container não fique muito grande em telas menores */
-@media (max-width: 1400px) {
-    .container-xl {
-        max-width: 1200px;
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        display: none;
     }
 }
