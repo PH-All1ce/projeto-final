@@ -36,13 +36,13 @@
                 Ano Modelo: <span class="fw-bold">{{ veiculo.ano_modelo }}</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                Quilometragem: <span class="fw-bold">{{ veiculo.quilometragem|intcomma }} km</span>
+                Quilometragem: <span class="fw-bold">{{ veiculo.quilometragem|intcomma }} KM</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                Potência: <span class="fw-bold">{{ veiculo.potencia }}</span>
+                Potência: <span class="fw-bold">{{ veiculo.potencia }} Cavalos</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                Consumo: <span class="fw-bold">{{ veiculo.consumo }}</span>
+                Consumo: <span class="fw-bold">{{ veiculo.consumo }} KM/L</span>
             </li>
         </ul>
 
@@ -54,7 +54,10 @@
         </div>
         
         <div class="mt-4">
-             <a href="#" class="btn btn-success btn-lg w-100">Tenho interesse neste veículo</a>
+            <form method="post" action="{% url 'veiculos_infos' veiculo.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success btn-lg w-100">Tenho interesse neste veículo</button>
+            </form>
         </div>
     </div>
 </div>

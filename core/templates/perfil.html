@@ -84,14 +84,14 @@
                         
                         {% if comprados %}
                             <ul class="list-group">
-                                {% for veiculo in comprados %}
+                                {% for compra in comprados %}
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <div>
-                                            <h6 class="mb-1">{{ veiculo.nome }} ({{ veiculo.marca }})</h6>
-                                            <small class="text-muted">Ano: {{ veiculo.ano_modelo }} | KM: {{ veiculo.quilometragem|intcomma }}</small>
+                                            <h6 class="mb-1">{{ compra.veiculo.marca }} {{ compra.veiculo.nome }}</h6>
+                                            <small class="text-muted">Ano: {{ compra.veiculo.ano_modelo }} | KM: {{ compra.veiculo.quilometragem|intcomma }}</small>
                                         </div>
                                         <span class="badge bg-success fs-6">
-                                            R$ {{ veiculo.preco|floatformat:0|intcomma }}
+                                            R$ {{ compra.veiculo.preco|floatformat:0|intcomma }}
                                         </span>
                                     </li>
                                 {% endfor %}

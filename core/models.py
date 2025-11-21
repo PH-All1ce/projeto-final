@@ -1,7 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import BaseUserManager, PermissionsMixin
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
 
 class TipoUsuario(models.Model):
     nome_tipo = models.CharField(max_length=20, unique=True)
@@ -14,11 +13,10 @@ class Cliente(AbstractUser):
     endereco = models.CharField(max_length=255, blank=True, null=True)
     nome_cidade = models.CharField(max_length=100, blank=True, null=True)
     nome_bairro = models.CharField(max_length=100, blank=True, null=True)
+    saldo = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, verbose_name="Saldo")
 
     def __str__(self):
         return f"{self.username} - {self.cpf}"
-
-    USERNAME_FIELD = 'username'
 
     @property
     def is_gerente(self):
@@ -31,6 +29,8 @@ class Cliente(AbstractUser):
     @property
     def is_cliente(self):
         return self.groups.filter(name="Cliente").exists()
+
+    REQUIRED_FIELDS = ['cpf']
 
 
 class Veiculo(models.Model):
@@ -61,7 +61,7 @@ class Compra(models.Model):
     status_credito = models.ForeignKey(StatusCredito, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Compra {self.id} - {self.cliente.nome}"
+        return f"Compra {self.id} - {self.cliente.username}"
 
 
 class Financeiro(models.Model):

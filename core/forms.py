@@ -36,6 +36,24 @@ class RegistroClienteForm(UserCreationForm):
         max_length=11,
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '00000000000'})
     )
+    endereco = forms.CharField(
+        label="Endereço",
+        max_length=255,
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    nome_cidade = forms.CharField(
+        label="Cidade",
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    nome_bairro = forms.CharField(
+        label="Bairro",
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
     tipo_usuario = forms.ChoiceField(
         choices=[('Cliente', 'Cliente'), ('Vendedor', 'Vendedor')],
         label="Tipo de Usuário",
@@ -44,7 +62,7 @@ class RegistroClienteForm(UserCreationForm):
 
     class Meta:
         model = Cliente
-        fields = ('username', 'email', 'first_name', 'last_name', 'cpf', 'password1', 'password2', 'tipo_usuario')
+        fields = ('username', 'email', 'first_name', 'last_name', 'cpf', 'endereco', 'nome_cidade', 'nome_bairro', 'password1', 'password2', 'tipo_usuario')
         labels = {
             'username': 'Nome de Usuário',
         }
@@ -92,11 +110,11 @@ class VeiculoForm(forms.ModelForm):
         labels = {
             'nome': 'Nome do Veículo',
             'marca': 'Marca',
-            'preco': 'Preço (R$)',
+            'preco': 'Preço',
             'ano_modelo': 'Ano do Modelo',
-            'quilometragem': 'Quilometragem (km)',
+            'quilometragem': 'Quilometragem (KM)',
             'potencia': 'Potência',
-            'consumo': 'Consumo (km/l)',
+            'consumo': 'Consumo (KM/L)',
             'historico_dono': 'Histórico do Dono',
             'foto_url': 'URL da Foto',
         }
@@ -111,6 +129,22 @@ class VeiculoForm(forms.ModelForm):
             'historico_dono': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
             'foto_url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Cole a URL da imagem'}),
         }
+
+class SaldoForm(forms.Form):
+    saldo = forms.DecimalField(
+        label='Novo Saldo (R$)',
+        max_digits=10,
+        decimal_places=2,
+        min_value=0,
+        error_messages={
+            'invalid': 'Digite um número válido.',
+            'max_digits': 'Certifique-se de que não haja mais de %(max)s dígitos no total.',
+            'max_decimal_places': 'Certifique-se de que não haja mais de %(max)s casas decimais.',
+            'max_whole_digits': 'Certifique-se de que não haja mais de %(max)s dígitos antes da vírgula.',
+            'min_value': 'Certifique-se de que o valor seja maior ou igual a %(limit_value)s.',
+        },
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ex: 10000.00', 'step': '0.01'})
+    )
 
 class VeiculoFiltroForm(forms.Form):
     nome = forms.CharField(

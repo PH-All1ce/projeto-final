@@ -3,18 +3,31 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from django.contrib.auth.models import Group
-from .models import Veiculo
-from .forms import VeiculoForm, LoginForm, RegistroClienteForm, VeiculoFiltroForm
+from .models import Veiculo, Compra, StatusCredito
+from .forms import VeiculoForm, LoginForm, RegistroClienteForm, VeiculoFiltroForm, SaldoForm
 from django.contrib.auth import logout
 
-# --- LOGIN / LOGOUT / REGISTRO ---
+# LOGIN LOGOUT REGISTRO
 
 @login_required
 def meu_perfil(request):
     user = request.user
-    return render(request, 'perfil.html', {'user': user})
+    saldo_form = SaldoForm()
+    comprados = Compra.objects.filter(cliente=user).select_related('veiculo')
+
+    if request.method == 'POST':
+        saldo_form = SaldoForm(request.POST)
+        if saldo_form.is_valid():
+            novo_saldo = saldo_form.cleaned_data['saldo']
+            user.saldo = novo_saldo
+            user.save()
+            messages.success(request, f'Saldo atualizado para R$ {novo_saldo:.2f} com sucesso!')
+            return redirect('meu_perfil')
+
+    return render(request, 'perfil.html', {'user': user, 'saldo_form': saldo_form, 'comprados': comprados})
 
 def login_view(request):
+    login_error = None
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -23,14 +36,15 @@ def login_view(request):
             user = authenticate(request, username=username, password=senha)
             if user:
                 login(request, user)
+                messages.success(request, "Você entrou na sua conta")
                 if user.has_perm('core.change_veiculo'):
                     return redirect('painel')
                 return redirect('home')
             else:
-                messages.error(request, "Usuário ou senha inválidos.")
+                login_error = "Usuário ou senha inválidos."
     else:
         form = LoginForm()
-    return render(request, "login.html", {"form": form})
+    return render(request, "login.html", {"form": form, "login_error": login_error})
 
 def logout_view(request):
     logout(request)
@@ -61,7 +75,9 @@ def registrar_cliente(request):
 # --- VEÍCULOS ---
 
 def carros_listar(request):
-    veiculos = Veiculo.objects.all()
+    # Exclui veículos que já foram comprados
+    veiculos_comprados = Compra.objects.values_list('veiculo_id', flat=True)
+    veiculos = Veiculo.objects.exclude(id__in=veiculos_comprados)
     form = VeiculoFiltroForm(request.GET)
     
     if form.is_valid():
@@ -127,14 +143,34 @@ def veiculo_remover(request, id):
         return redirect('painel')
     return render(request, 'confirmar_remocao.html', {'veiculo': veiculo})
 
+@login_required
 def veiculos_infos(request, id):
     veiculo = get_object_or_404(Veiculo, id=id)
+    
+    if request.method == 'POST':
+        if request.user.saldo >= veiculo.preco:
+            request.user.saldo -= veiculo.preco
+            request.user.save()
+            
+            status_aprovado, created = StatusCredito.objects.get_or_create(nome_status='Aprovado')
+            Compra.objects.create(
+                cliente=request.user,
+                veiculo=veiculo,
+                status_credito=status_aprovado
+            )
+            
+            messages.success(request, f'Veículo {veiculo.nome} comprado com sucesso! Saldo restante: R$ {request.user.saldo:.2f}')
+            return redirect('home')
+        else:
+            messages.error(request, 'Saldo insuficiente para comprar este veículo.')
+    
     return render(request, 'infos.html', {'veiculo': veiculo})
 
 @login_required
 @permission_required('core.change_veiculo', login_url='/login/')
 def painel_vendedor(request):
-    veiculos = Veiculo.objects.all()
+    veiculos_comprados = Compra.objects.values_list('veiculo_id', flat=True)
+    veiculos = Veiculo.objects.exclude(id__in=veiculos_comprados)
     return render(request, "painel.html", {"veiculos": veiculos})
 
 @login_required
@@ -145,11 +181,7 @@ def deletar_conta(request):
     if request.method == 'POST':
         user = request.user
         username = user.username
-        
-        # Deleta o usuário
         user.delete()
-        
-        # Faz logout e redireciona
         messages.success(request, f'Conta {username} foi deletada com sucesso!')
         return redirect('home')
     

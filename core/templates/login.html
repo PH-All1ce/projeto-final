@@ -11,16 +11,11 @@
                     <h2 class="mb-0">Entrar</h2>
                 </div>
                 <div class="card-body p-4">
-                    {% if messages %}
-                        {% for message in messages %}
-                            {# Não exibe mensagens do tipo 'success' dentro do card para evitar alertas duplicados/indesejados #}
-                            {% if 'success' not in message.tags %}
-                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                    {{ message }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
+                    {% if login_error %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ login_error }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
                     {% endif %}
                     
                     <form method="POST">
@@ -37,7 +32,7 @@
                     </form>
                     
                     <hr>
-                    <p class="text-center">Não tem conta? <a href="{% url 'registro' %}">Criar uma</a></p>
+                    <p class="text-center">Não tem conta? <a href="{% url 'registrar_cliente' %}">Criar uma</a></p>
                 </div>
             </div>
         </div>
