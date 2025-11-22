@@ -1,0 +1,7 @@
+README.md
+pyproject.toml
+projeto_carros.egg-info/PKG-INFO
+projeto_carros.egg-info/SOURCES.txt
+projeto_carros.egg-info/dependency_links.txt
+projeto_carros.egg-info/requires.txt
+projeto_carros.egg-info/top_level.txt

@@ -1,0 +1,55 @@
+[project]
+name = "projeto-carros"
+version = "0.1.0"
+description = "Sistema de CRUD e venda de carros"
+authors = [
+    { name = "Pedro Henrique", email = "henrique.lima2@escolar.ifrn.edu.br" },
+    { name = "Douglas Paulino", email = "p.douglas@escolar.ifrn.edu.br" }
+]
+requires-python = ">=3.10"
+
+dependencies = [
+    "asgiref==3.7.2",
+    "Django==4.2.2",
+    "sqlparse==0.4.4",
+    "Pillow==10.0.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/PH-All1ce/projeto-final"
+Repository = "https://github.com/PH-All1ce/projeto-final"
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "flake8",
+    "isort",
+    "pytest",
+    "pytest-django",
+    "pytest-asyncio"
+]
+lint = [
+    "black",
+    "flake8",
+    "isort"
+]
+test = [
+    "pytest",
+    "pytest-django",
+    "pytest-asyncio"
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
+
+[tool.setuptools.packages.find]
+include = ["projeto_carros*"]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
