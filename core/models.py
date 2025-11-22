@@ -2,18 +2,22 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 
+
 class TipoUsuario(models.Model):
     nome_tipo = models.CharField(max_length=20, unique=True)
 
     def __str__(self):
         return self.nome_tipo
 
+
 class Cliente(AbstractUser):
     cpf = models.CharField(max_length=11, unique=True, verbose_name="CPF")
     endereco = models.CharField(max_length=255, blank=True, null=True)
     nome_cidade = models.CharField(max_length=100, blank=True, null=True)
     nome_bairro = models.CharField(max_length=100, blank=True, null=True)
-    saldo = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, verbose_name="Saldo")
+    saldo = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0.00, verbose_name="Saldo"
+    )
 
     def __str__(self):
         return f"{self.username} - {self.cpf}"
@@ -30,7 +34,7 @@ class Cliente(AbstractUser):
     def is_cliente(self):
         return self.groups.filter(name="Cliente").exists()
 
-    REQUIRED_FIELDS = ['cpf']
+    REQUIRED_FIELDS = ["cpf"]
 
 
 class Veiculo(models.Model):
@@ -74,10 +78,11 @@ class AquisicaoVeiculo(models.Model):
     data_aquisicao = models.DateField()
 
 
-
 class TransacaoFinanceira(models.Model):
     compra = models.ForeignKey(Compra, on_delete=models.CASCADE, null=True, blank=True)
-    aquisicao = models.ForeignKey(AquisicaoVeiculo, on_delete=models.CASCADE, null=True, blank=True)
+    aquisicao = models.ForeignKey(
+        AquisicaoVeiculo, on_delete=models.CASCADE, null=True, blank=True
+    )
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     tipo_transacao = models.CharField(max_length=20)
     data_transacao = models.DateTimeField(auto_now_add=True)
