@@ -190,7 +190,7 @@ class VeiculoFiltroForm(forms.Form):
         label="Nome do Veículo",
         required=False,
         widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "Ex: Fiat Uno"}
+            attrs={"class": "form-control", "placeholder": "Ex: Corolla"}
         ),
     )
     ano_min = forms.IntegerField(
@@ -208,7 +208,7 @@ class VeiculoFiltroForm(forms.Form):
         ),
     )
     quilometragem_max = forms.IntegerField(
-        label="Quilometragem Máxima (km)",
+        label="Quilometragem Máxima (KM)",
         required=False,
         widget=forms.NumberInput(
             attrs={"class": "form-control", "placeholder": "Ex: 100000"}

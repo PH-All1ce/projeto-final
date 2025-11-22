@@ -1,10 +1,23 @@
 Loja de carros, Douglas Paulino e Pedro Henrique
 
 requirements:
-Python 3.11, Django 5.0
-SQLite3 (para desenvolvimento)
-HTML5, CSS3, JavaScript (se aplicável)
-Git, GitHub
+asgiref==3.9.1
+black==25.11.0
+click==8.3.1
+colorama==0.4.6
+Django==5.2.6
+flake8==7.3.0
+mccabe==0.7.0
+mypy_extensions==1.1.0
+packaging==25.0
+pathspec==0.12.1
+pillow==12.0.0
+platformdirs==4.5.0
+pycodestyle==2.14.0
+pyflakes==3.4.0
+pytokens==0.3.0
+sqlparse==0.5.3
+tzdata==2025.2
 
 #Para Executar o Projeto
 
