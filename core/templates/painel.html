@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 {% load humanize %}
 
+{% load url_extras %}
+
+<div class="row">
+    <div class="col-12">
+        {% include "pagination.html" with page_obj=veiculos request=request %}
+    </div>
+</div>
+
 {% block title %}Painel do Vendedor - AutoCenter{% endblock %}
 
 {% block content %}
@@ -56,9 +64,8 @@
             </div>
         {% endfor %}
     </div>
+    {% include "paginacao.html" with page_obj=veiculos %}
 </main>
-
-{# ...existing code... #}
 
 <style>
 /* tornar conteúdo full-width (remover grid da sidebar) */

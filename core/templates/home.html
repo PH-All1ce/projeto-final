@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 {% load humanize %}
 
+{% load url_extras %}
+
+<div class="row">
+    <div class="col-12">
+        {% include "pagination.html" with page_obj=veiculos request=request %}
+    </div>
+</div>
+
 {% block title %}Catálogo de Veículos - AutoCenter{% endblock %}
 
 {% block content %}
@@ -61,5 +69,5 @@
         {% endif %}
     {% endif %}
 </div>
-
+{% include "paginacao.html" with page_obj=veiculos %}
 {% endblock %}

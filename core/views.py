@@ -12,6 +12,8 @@ from .forms import (
     SaldoForm,
 )
 from django.contrib.auth import logout
+from django.core.paginator import Paginator
+
 
 # LOGIN LOGOUT REGISTRO
 
@@ -121,7 +123,14 @@ def carros_listar(request):
 
     veiculos = veiculos.order_by("-ano_modelo", "preco")
 
-    return render(request, "home.html", {"veiculos": veiculos, "form_filtro": form})
+    # Paginação: 6 veículos por página (altere como quiser)
+    paginator = Paginator(veiculos, 8)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "home.html", {"veiculos": page_obj, "form_filtro": form}
+)
+
 
 
 @login_required
@@ -199,8 +208,14 @@ def veiculos_infos(request, id):
 @permission_required("core.change_veiculo", login_url="/login/")
 def painel_vendedor(request):
     veiculos_comprados = Compra.objects.values_list("veiculo_id", flat=True)
-    veiculos = Veiculo.objects.exclude(id__in=veiculos_comprados)
-    return render(request, "painel.html", {"veiculos": veiculos})
+    veiculos = Veiculo.objects.exclude(id__in=veiculos_comprados).order_by("-ano_modelo", "preco")
+    
+    # Paginação: 8 veículos por página
+    paginator = Paginator(veiculos, 8)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, "painel.html", {"veiculos": page_obj})
 
 
 @login_required
