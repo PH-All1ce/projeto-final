@@ -3,11 +3,6 @@
 
 {% load url_extras %}
 
-<div class="row">
-    <div class="col-12">
-        {% include "pagination.html" with page_obj=veiculos request=request %}
-    </div>
-</div>
 
 {% block title %}Catálogo de Veículos - AutoCenter{% endblock %}
 
@@ -69,5 +64,21 @@
         {% endif %}
     {% endif %}
 </div>
-{% include "paginacao.html" with page_obj=veiculos %}
+
+<div class="pagination-container">
+    {% if veiculos %}
+        {% include "paginacao.html" with page_obj=veiculos %}
+    {% endif %}
+</div>
+
 {% endblock %}
+
+<style>
+
+.pagination-container {
+    display: flex; /* Habilita o Flexbox */
+    justify-content: center; /* Centraliza o conteúdo (o menu de paginação) horizontalmente */
+    margin-top: 30px; /* Adiciona algum espaço acima do menu */
+}
+
+</style>
