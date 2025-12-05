@@ -73,15 +73,14 @@ def registrar_cliente(request):
         form = RegistroClienteForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            tipo = form.cleaned_data["tipo_usuario"]
             user.save()
 
-            grupo, created = Group.objects.get_or_create(name=tipo)
+            grupo, created = Group.objects.get_or_create(name="Cliente")
             user.groups.add(grupo)
 
             messages.success(
                 request,
-                f"Sua conta de {tipo} foi criada com sucesso! Faça login para continuar.",
+                f"Sua conta de Cliente foi criada com sucesso! Faça login para continuar.",
             )
             return redirect("login")
         else:

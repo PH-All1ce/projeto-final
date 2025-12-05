@@ -56,11 +56,6 @@ class RegistroClienteForm(UserCreationForm):
         required=False,
         widget=forms.TextInput(attrs={"class": "form-control"}),
     )
-    tipo_usuario = forms.ChoiceField(
-        choices=[("Cliente", "Cliente"), ("Vendedor", "Vendedor")],
-        label="Tipo de Usuário",
-        widget=forms.Select(attrs={"class": "form-select"}),
-    )
 
     class Meta:
         model = Cliente
@@ -75,7 +70,6 @@ class RegistroClienteForm(UserCreationForm):
             "nome_bairro",
             "password1",
             "password2",
-            "tipo_usuario",
         )
         labels = {
             "username": "Nome de Usuário",
@@ -118,6 +112,15 @@ class RegistroClienteForm(UserCreationForm):
         if not cpf.isdigit():
             raise forms.ValidationError("CPF deve conter apenas números.")
         return cpf
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+
+        user.tipo_usuario = "Cliente"
+
+        if commit:
+            user.save()
+        return user
 
 
 class VeiculoForm(forms.ModelForm):
