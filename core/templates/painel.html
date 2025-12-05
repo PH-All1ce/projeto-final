@@ -74,7 +74,7 @@
                 </div>
             </div>
         {% empty %}
-            <div class="col-12 text-center py-5">
+            <div class="col-12 text-center py-5" style="grid-column: 1 / -1;">
                 <i class="fas fa-inbox" style="font-size: 3rem; color: #ccc;"></i>
                 <p class="lead mt-3">Nenhum veículo cadastrado no momento.</p>
                 <a href="{% url 'veiculo_criar' %}" class="btn btn-primary mt-3">Adicione um novo!</a>

@@ -54,11 +54,11 @@
         {% endfor %}
     {% else %}
         {% if request.GET %}
-            <div class="col-12 text-center py-5">
+            <div class="col-12 text-center py-5" style="grid-column: 1 / -1;">
                 <p class="lead text-muted">Nenhum veículo encontrado com os filtros aplicados.</p>
             </div>
         {% else %}
-            <div class="col-12 text-center py-5">
+            <div class="col-12 text-center py-5" style="grid-column: 1 / -1;">
                 <p class="lead text-muted">Nenhum veículo disponível no momento.</p>
             </div>
         {% endif %}
