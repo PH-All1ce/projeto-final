@@ -46,7 +46,7 @@ class Veiculo(models.Model):
     consumo = models.CharField(max_length=100)
     historico_dono = models.TextField(blank=True, null=True)
     marca = models.CharField(max_length=100)
-    foto_url = models.TextField( blank=True, null=True)
+    foto_url = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.nome} ({self.ano_modelo})"
