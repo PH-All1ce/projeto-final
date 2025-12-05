@@ -140,7 +140,7 @@ class VeiculoForm(forms.ModelForm):
             "preco": "Preço",
             "ano_modelo": "Ano do Modelo",
             "quilometragem": "Quilometragem (KM)",
-            "potencia": "Potência",
+            "potencia": "Potência (HP)",
             "consumo": "Consumo (KM/L)",
             "historico_dono": "Histórico do Dono",
             "foto_url": "URL da Foto",
