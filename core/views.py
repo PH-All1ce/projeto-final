@@ -97,7 +97,6 @@ def registrar_cliente(request):
 
 
 def carros_listar(request):
-    # Exclui veículos que já foram comprados
     veiculos_comprados = Compra.objects.values_list("veiculo_id", flat=True)
     veiculos = Veiculo.objects.exclude(id__in=veiculos_comprados)
     form = VeiculoFiltroForm(request.GET)
@@ -122,7 +121,6 @@ def carros_listar(request):
 
     veiculos = veiculos.order_by("-ano_modelo", "preco")
 
-    # Paginação: 6 veículos por página (altere como quiser)
     paginator = Paginator(veiculos, 8)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -205,16 +203,34 @@ def veiculos_infos(request, id):
 @permission_required("core.change_veiculo", login_url="/login/")
 def painel_vendedor(request):
     veiculos_comprados = Compra.objects.values_list("veiculo_id", flat=True)
-    veiculos = Veiculo.objects.exclude(id__in=veiculos_comprados).order_by(
-        "-ano_modelo", "preco"
-    )
+    veiculos = Veiculo.objects.exclude(id__in=veiculos_comprados).order_by("-ano_modelo", "preco")
+    form = VeiculoFiltroForm(request.GET)
 
-    # Paginação: 8 veículos por página
+    if form.is_valid():
+        nome = form.cleaned_data.get("nome")
+        ano_min = form.cleaned_data.get("ano_min")
+        preco_max = form.cleaned_data.get("preco_max")
+        quilometragem_max = form.cleaned_data.get("quilometragem_max")
+
+        if nome:
+            veiculos = veiculos.filter(nome__icontains=nome)
+
+        if ano_min:
+            veiculos = veiculos.filter(ano_modelo__gte=ano_min)
+
+        if preco_max:
+            veiculos = veiculos.filter(preco__lte=preco_max)
+
+        if quilometragem_max:
+            veiculos = veiculos.filter(quilometragem__lte=quilometragem_max)
+
+    veiculos = veiculos.order_by("-ano_modelo", "preco")
+
     paginator = Paginator(veiculos, 8)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    return render(request, "painel.html", {"veiculos": page_obj})
+    return render(request, "painel.html", {"veiculos": page_obj, "form_filtro": form})
 
 
 @login_required
