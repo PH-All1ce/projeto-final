@@ -203,7 +203,9 @@ def veiculos_infos(request, id):
 @permission_required("core.change_veiculo", login_url="/login/")
 def painel_vendedor(request):
     veiculos_comprados = Compra.objects.values_list("veiculo_id", flat=True)
-    veiculos = Veiculo.objects.exclude(id__in=veiculos_comprados).order_by("-ano_modelo", "preco")
+    veiculos = Veiculo.objects.exclude(id__in=veiculos_comprados).order_by(
+        "-ano_modelo", "preco"
+    )
     form = VeiculoFiltroForm(request.GET)
 
     if form.is_valid():
