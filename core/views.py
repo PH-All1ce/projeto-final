@@ -10,12 +10,13 @@ from .forms import (
     RegistroClienteForm,
     VeiculoFiltroForm,
     SaldoForm,
+    PerfilEditForm,
 )
 from django.contrib.auth import logout
 from django.core.paginator import Paginator
 
 
-# LOGIN LOGOUT REGISTRO
+# LOGIN LOGOUT REGISTRO EDITAR PERFIL
 
 
 @login_required
@@ -91,6 +92,20 @@ def registrar_cliente(request):
         form = RegistroClienteForm()
 
     return render(request, "registro_usu.html", {"form": form})
+
+
+@login_required
+def editar_perfil(request):
+    user = request.user
+    if request.method == "POST":
+        form = PerfilEditForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Perfil atualizado com sucesso.")
+            return redirect("meu_perfil")
+    else:
+        form = PerfilEditForm(instance=user)
+    return render(request, "editar_perfil.html", {"form": form})
 
 
 # --- VEÍCULOS ---

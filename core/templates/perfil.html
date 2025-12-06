@@ -12,7 +12,7 @@
                 
                 <div class="text-center mb-5">
                     <h1 class="display-5 fw-bold text-dark">
-                        👋 Bem-vindo(a), {{ user.username }}!
+                        Bem-vindo(a), {{ user.username }}!
                     </h1>
                     <p class="lead text-muted">Seu painel de controle e informações de conta.</p>
                 </div>
@@ -28,7 +28,7 @@
                     </div>
                     <div class="col-md-6 pt-3 pt-md-0">
                         <h4 class="fw-bold mb-3">Detalhes de Localização</h4>
-                        <p class="mb-1"><small class="text-muted d-block">Endereço:</small> <strong>{{ user.endereco }}</strong></p>
+                        <p class="mb-1"><small class="text-muted d-block">Rua:</small> <strong>{{ user.rua }}</strong></p>
                         <p class="mb-1"><small class="text-muted d-block">Bairro:</small> <strong>{{ user.nome_bairro }}</strong></p>
                         <p class="mb-1"><small class="text-muted d-block">Cidade:</small> <strong>{{ user.nome_cidade }}</strong></p>
                     </div>
@@ -37,12 +37,12 @@
                 <ul class="nav nav-tabs nav-fill" id="profileTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active" id="saldo-tab" data-bs-toggle="tab" data-bs-target="#saldo-pane" type="button" role="tab" aria-controls="saldo-pane" aria-selected="true">
-                            💰 Saldo e Fundos
+                            Saldo e Fundos
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="compras-tab" data-bs-toggle="tab" data-bs-target="#compras-pane" type="button" role="tab" aria-controls="compras-pane" aria-selected="false">
-                            🚗 Meus Veículos Comprados
+                            Meus Veículos Comprados
                         </button>
                     </li>
                 </ul>
@@ -103,9 +103,8 @@
                         {% endif %}
                     </div>
                 </div>
-
-                <!-- Zona de Risco - Deletar Conta -->
                 <div class="mt-5 pt-4 border-top">
+                    <a href="{% url 'editar_perfil' %}" class="btn btn-outline-primary">Editar Perfil</a>
                     <a href="{% url 'deletar_conta' %}" class="btn btn-outline-danger">
                         <i class="fas fa-trash-alt"></i> Deletar Minha Conta
                     </a>

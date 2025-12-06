@@ -38,8 +38,8 @@ class RegistroClienteForm(UserCreationForm):
             attrs={"class": "form-control", "placeholder": "00000000000"}
         ),
     )
-    endereco = forms.CharField(
-        label="Endereço",
+    rua = forms.CharField(
+        label="Rua",
         max_length=255,
         required=False,
         widget=forms.TextInput(attrs={"class": "form-control"}),
@@ -65,7 +65,7 @@ class RegistroClienteForm(UserCreationForm):
             "first_name",
             "last_name",
             "cpf",
-            "endereco",
+            "rua",
             "nome_cidade",
             "nome_bairro",
             "password1",
@@ -121,6 +121,27 @@ class RegistroClienteForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class PerfilEditForm(forms.ModelForm):
+    class Meta:
+        model = Cliente
+        fields = (
+            "email",
+            "rua",
+            "nome_bairro",
+            "nome_cidade",
+            "first_name",
+            "last_name",
+        )
+        widgets = {
+            "email": forms.EmailInput(attrs={"class": "form-control"}),
+            "rua": forms.TextInput(attrs={"class": "form-control"}),
+            "nome_bairro": forms.TextInput(attrs={"class": "form-control"}),
+            "nome_cidade": forms.TextInput(attrs={"class": "form-control"}),
+            "first_name": forms.TextInput(attrs={"class": "form-control"}),
+            "last_name": forms.TextInput(attrs={"class": "form-control"}),
+        }
 
 
 class VeiculoForm(forms.ModelForm):

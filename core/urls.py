@@ -15,5 +15,6 @@ urlpatterns = [
     # Contas
     path("painel/", views.painel_vendedor, name="painel"),
     path("perfil/", views.meu_perfil, name="meu_perfil"),
+    path("perfil/editar/", views.editar_perfil, name="editar_perfil"),
     path("deletar-conta/", views.deletar_conta, name="deletar_conta"),
 ]

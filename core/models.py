@@ -12,7 +12,7 @@ class TipoUsuario(models.Model):
 
 class Cliente(AbstractUser):
     cpf = models.CharField(max_length=11, unique=True, verbose_name="CPF")
-    endereco = models.CharField(max_length=255, blank=True, null=True)
+    rua = models.CharField(max_length=255, blank=True, null=True)
     nome_cidade = models.CharField(max_length=100, blank=True, null=True)
     nome_bairro = models.CharField(max_length=100, blank=True, null=True)
     saldo = models.DecimalField(
