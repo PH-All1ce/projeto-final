@@ -1,62 +1,79 @@
-Loja de carros, Douglas Paulino e Pedro Henrique
+# AutoCenter, uma loja de carros
 
-requirements:
-asgiref==3.9.1
-black==25.11.0
-click==8.3.1
-colorama==0.4.6
-Django==5.2.6
-flake8==7.3.0
-mccabe==0.7.0
-mypy_extensions==1.1.0
-packaging==25.0
-pathspec==0.12.1
-pillow==12.0.0
-platformdirs==4.5.0
-pycodestyle==2.14.0
-pyflakes==3.4.0
-pytokens==0.3.0
-sqlparse==0.5.3
-tzdata==2025.2
+Projeto que utiliza o framework django para dar origem a uma loja de veículos. A loja possui um estoque pré-definido, que pode ser consumido pelos clientes (usuários comuns), e editado pelos vendedores (usuário responsável pelo gerenciamento da loja). As permissões de vendedor são transferidas para o usuário através do painel admin do django.
 
-#Para Executar o Projeto
+# Instruções de instalação e configuração
+
+## Pré-requisitos
+
+- Windows 10/11
+- [Python 3.11+](https://www.python.org/downloads/) (marque a opção “Add Python to PATH” ao instalar)
+- Git (necessário para clonar o repositório)
+
+## Passo a passo (Windows)
+
+1. **Clonar o projeto**
+   ```powershell
+   git clone https://github.com/PH-All1ce/projeto-final
+   
+   
+2. **Criar o ambiente virtual**
+   ```powershell
+   python -m venv venv
+   ```
+
+3. **Ativar o ambiente virtual**
+   ```powershell
+   .\venv\Scripts\Activate
+   ```
+
+4. **Instalar dependências**
+   ```powershell
+   pip install -r requirements.txt
+   ```
+
+5. **Aplicar migrações**
+   ```powershell
+   python manage.py migrate
+   ```
+
+6. **Criar superusuário (necessário para utilizar /admin e habilitar as permissões de vendedor para o usuário)**
+   ```powershell
+   python manage.py createsuperuser
+   ```
+
+7. **Executar o servidor**
+   ```powershell
+   python manage.py runserver
+   ```
+
+8. **Abrir o app**
+   - Interface principal: http://127.0.0.1:8000/
+   - Admin Django: http://127.0.0.1:8000/admin/
+
+## Variáveis úteis
+
+- Parar o servidor: `Ctrl + C` no terminal.
+- Desativar o ambiente virtual: `deactivate`.
 
 
-Clone o repositório:
-    git clone https://github.com/PH-All1ce/projeto-fin
+# Manual do usuário
 
-Crie e ative um ambiente virtual:
-    python -m venv venv
-    .\venv\Scripts\activate
+ **Para o usuário cliente:**
+Assim que o projeto for carregado, o usuário terá acesso a listagem de todos os veículos disponíveis, podendo navegar por todas as páginas e realizar a filtragem de acordo com os parâmetros disponíveis (nome do veículo, ano mínimo de lançamento, preço máximo e quilometragem máxima).
+O detalhamento e compra dos veículos só poderão ser realizadas após o usuário criar uma conta e estar logado nela (utilize os campos do canto superior direito da tela).
+Após a criação da conta o cliente poderá: 
+- Adquirir os veículos disponíveis (dependendo do saldo);
+- Consultar a lista de veículos comprados;
+- Ter acesso aos seus dados anteriormente cadastrados;
+- Realizar a edição de parte desses dados (e-mail e endereço);
+- Deletar a sua própria conta.
 
-Instale as dependências:
-    pip install -r requirements.txt
-
-Aplique as migrações do banco de dados:
-    python manage.py migrate
-
-Crie um superusuário para acessar o painel de admin:
-    python manage.py createsuperuser
-
-Execute o servidor de desenvolvimento:
-    python manage.py runserver
-
-Execute `http://127.0.0.1:8000/`
-
-Sobre a insersão do usuário customizado:
-
-Para deixar a modelagem dos tipos de usuário mais fácil, criamos um app chamado "users", que foi devidamente inserido nas configurações do projeto (settings.py);
-
-Utilizamos o AbstracUser como modelo de usuário customizado em users/models.py (informamos ao Django para utilizar esse modelo customizado em settings.py);
-
-Adicionamos novos campos ao modelo de usuário customizado (CPF, email e outros);
-
-Implementamos as letas de login e logout através de modelos fornecidos pelo próprio django;
-
-As URLs foram devidamente configuradas (em urls.py, utilizando include);
-
-As redirects também foram alteradas no settings.py (LOGIN_REDIRECT_URL e LOGOUT_REDIRECT_URL);
-
-Criamos os grupos de usuários com suas devidas permissões. Até o presente momento, pensamos em apenas 2 grupos: Cliente e Vendedor (O cliente pode fazer apenas ações básicas de interação, enquanto o Vendedor pode fazer tudo relacionado a administração);
-
-Alteramos as views para garantir que os usuários comuns (Clientes) não tenham acesso a determinadas funções dentro da aplicação (funções de administração).
+ **Para o usuário vendedor:**
+O vendedor deve criar a sua conta normalmente, como um cliente, e em seguida solicitar a promoção ao posto de vendedor para um dos donos da loja.
+No painel de administrador do Django, o dono, com o seu superusuário devidamente logado, poderá promover aqueles que desejar para o cargo de "Vendedor".
+Após receber os privilégios de vendedor, o usuário, além de contar com todas as permissões de cliente, receberá também o acesso ao "Painel Vendedor", localizado no canto superior direito da tela; lá, o vendedor terá acesso a gerencia da loja, podendo: 
+- Adicionar veículos; 
+- Editar informações que estiverem incorretas;
+- Remover os veículos da loja que estiverem com algum problema.
+(Os mesmos elementos de busca e paginação disponíveis para o cliente também estão disponíveis para o vendedor no "Painel Vendedor", facilitando o gerenciamento.)

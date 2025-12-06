@@ -229,7 +229,7 @@ class VeiculoFiltroForm(forms.Form):
         label="Preço Máximo (R$)",
         required=False,
         widget=forms.NumberInput(
-            attrs={"class": "form-control", "placeholder": "Ex: 50000", "step": "1000"}
+            attrs={"class": "form-control", "placeholder": "Ex: 50000", "step": "any"}
         ),
     )
     quilometragem_max = forms.IntegerField(
