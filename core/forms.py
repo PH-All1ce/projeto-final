@@ -167,7 +167,7 @@ class VeiculoForm(forms.ModelForm):
             "quilometragem": "Quilometragem (KM)",
             "potencia": "Potência (HP)",
             "consumo": "Consumo (KM/L)",
-            "historico_dono": "Histórico do Dono",
+            "historico_dono": "Histórico do antigo dono",
             "foto_url": "URL da Foto",
         }
         widgets = {
