@@ -51,11 +51,6 @@ Projeto que utiliza o framework django para dar origem a uma loja de veículos. 
    - Interface principal: http://127.0.0.1:8000/
    - Admin Django: http://127.0.0.1:8000/admin/
 
-## Variáveis úteis
-
-- Parar o servidor: `Ctrl + C` no terminal.
-- Desativar o ambiente virtual: `deactivate`.
-
 
 # Manual do usuário
 
@@ -76,4 +71,4 @@ Após receber os privilégios de vendedor, o usuário, além de contar com todas
 - Adicionar veículos; 
 - Editar informações que estiverem incorretas;
 - Remover os veículos da loja que estiverem com algum problema.
-(Os mesmos elementos de busca e paginação disponíveis para o cliente também estão disponíveis para o vendedor no "Painel Vendedor", facilitando o gerenciamento.)
+(Os mesmos elementos de busca e paginação disponíveis para o cliente também estão disponíveis para o vendedor no "Painel Vendedor", facilitando o gerenciamento).
