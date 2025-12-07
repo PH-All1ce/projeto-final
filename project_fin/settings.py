@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.humanize",
-    "core",
+    "core",  # app adicionado a lista
 ]
 
 MIDDLEWARE = [
@@ -107,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = "pt-br"
+LANGUAGE_CODE = "pt-br"  # tradução global do django
 
 TIME_ZONE = "UTC"
 
@@ -138,5 +138,5 @@ LOGOUT_REDIRECT_URL = "/"
 
 LOGIN_URL = "/login/"
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-DEFAULT_FROM_EMAIL = "no-reply@localhost"
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # sistema de trocar senha padrão do django
+DEFAULT_FROM_EMAIL = "no-reply@localhost"  # sistema de trocar senha padrão do django

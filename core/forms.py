@@ -171,7 +171,7 @@ class VeiculoForm(forms.ModelForm):  # form para criar/editar veículos
     class Meta:
         model = Veiculo  # modelo veículo que será utilizado no criação/edição
         fields = (
-            "nome",  # todos os campos do veículo de veículo utilizados na criação/edição
+            "nome",  # todos os campos de veículo utilizados na criação/edição
             "marca",
             "preco",
             "ano_modelo",

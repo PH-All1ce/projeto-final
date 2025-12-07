@@ -36,7 +36,7 @@ from django.core.paginator import Paginator  # paginação
 @login_required  # verifica se está logado
 def meu_perfil(request):
     user = request.user
-    saldo_form = SaldoForm()  # formulário para atualizar saldo
+    saldo_form = SaldoForm()  # recebe os dados do formulário
     comprados = Compra.objects.filter(cliente=user).select_related(
         "veiculo"
     )  # veículos comprados pelo usuário
@@ -45,14 +45,14 @@ def meu_perfil(request):
         saldo_form = SaldoForm(
             request.POST
         )  # post "postar" dados, dados não são enviadas pelo url, mas pelo corpo da requisição
-        if saldo_form.is_valid():  # se for válido o valor será atualizado
-            novo_saldo = saldo_form.cleaned_data["saldo"]
-            user.saldo = novo_saldo
-            user.save()
+        if saldo_form.is_valid():  # valida os dados
+            novo_saldo = saldo_form.cleaned_data["saldo"]  # extrai o valor
+            user.saldo = novo_saldo  # atualiza o atributo
+            user.save()  # salva no banco de dados
             messages.success(
                 request, f"Saldo atualizado para R$ {novo_saldo:.2f} com sucesso!"
             )
-            return redirect("meu_perfil")
+            return redirect("meu_perfil")  # recarrega a página
 
     return render(
         request,
@@ -144,7 +144,7 @@ def editar_perfil(request):
 def carros_listar(request):
     veiculos_comprados = Compra.objects.values_list(
         "veiculo_id", flat=True
-    )  # busca todos os veículos
+    )  # busca todos os veículos que foram comprados
     veiculos = Veiculo.objects.exclude(
         id__in=veiculos_comprados
     )  # exclui os veículos que já foram comprados e mostra só os disponíveis

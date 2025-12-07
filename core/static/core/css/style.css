@@ -1,14 +1,12 @@
 body {
-    padding-top: 0 !important;
+    padding-top: 0 !important;  /* remove a parte "morta", fazendo que o site ocupe toda a parte de cima da tela */
 }
 
-/* Espaçamento correto após navbar */
 .navbar {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     margin-bottom: 20px;
 }
 
-/* Melhorar formulários */
 .form-control, .form-select {
     border-radius: 6px;
     border: 1px solid #dee2e6;
@@ -21,7 +19,6 @@ body {
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
-/* Cards */
 .card {
     border: none;
     border-radius: 10px;
@@ -34,7 +31,6 @@ body {
     padding: 1rem 1.25rem;
 }
 
-/* Layout Vendedor - Painel à Esquerda */
 .vendedor-container {
     display: grid;
     grid-template-columns: 280px 1fr;
@@ -55,13 +51,13 @@ body {
     padding: 12px 15px;
     margin-bottom: 8px;
     border-radius: 6px;
-    text-decoration: none;
+    text-decoration: none; /*remove o sublinhado*/
     transition: all 0.3s;
 }
 
 .vendedor-sidebar a:hover {
     background: #f0f2f5;
-    transform: translateX(5px);
+    transform: translateX(5px); /*sensação de movimento, para a direita*/
 }
 
 @media (max-width: 768px) {
@@ -70,7 +66,6 @@ body {
     }
 }
 
-/* Melhorar grid de carros */
 .car-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -83,11 +78,11 @@ body {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s; /*transição suave as coisas que mudam, quando passa o mouse*/
 }
 
-.car-card:hover {
-    transform: translateY(-5px);
+.car-card:hover { /*estilo quando o mouse passa por cima do card*/
+    transform: translateY(-5px); /*movimentação dos cards*/
     box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 
@@ -101,14 +96,13 @@ body {
     padding: 15px;
 }
 
-/* Mensagens de erro */
-.alert {
-    border-radius: 8px;
-    border: none;
+.alert { /*mensagens de alerta*/
+    border-radius: 8px; /*canto arredondado*/
+    border: none; /*remove a borda padrão*/
     animation: fadeOut 2s ease-in-out 2s forwards;
 }
 
-.text-danger {
+.text-danger {  /*mensagem de erro*/
     color: #dc3545;
     font-size: 13px;
 }
