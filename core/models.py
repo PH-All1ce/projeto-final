@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 
 
 class TipoUsuario(models.Model):
@@ -94,3 +96,14 @@ class TransacaoFinanceira(models.Model):
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     tipo_transacao = models.CharField(max_length=20)
     data_transacao = models.DateTimeField(auto_now_add=True)
+
+
+@receiver(pre_delete, sender=Cliente)
+def delete_veiculos_of_deleted_cliente(sender, instance, **kwargs):
+    # pega ids dos veículos comprados pelo cliente que vai deletar a conta
+    veiculo_ids = list(
+        Compra.objects.filter(cliente=instance).values_list("veiculo_id", flat=True)
+    )
+    if veiculo_ids:
+        # deleta todos os veículos comprados por esse cliente
+        Veiculo.objects.filter(id__in=veiculo_ids).delete()
