@@ -34,7 +34,15 @@ class Cliente(AbstractUser):
     def is_cliente(self):
         return self.groups.filter(name="Cliente").exists()
 
-    REQUIRED_FIELDS = ["cpf"]
+    REQUIRED_FIELDS = [
+        "cpf",
+        "email",
+        "rua",
+        "nome_cidade",
+        "nome_bairro",
+        "first_name",
+        "last_name",
+    ]
 
 
 class Veiculo(models.Model):

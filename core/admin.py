@@ -16,14 +16,14 @@ class ClienteAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         (
             "Informações adicionais",
-            {"fields": ("cpf", "endereco", "nome_cidade", "nome_bairro")},
+            {"fields": ("cpf", "rua", "nome_cidade", "nome_bairro")},
         ),
     )
 
     add_fieldsets = UserAdmin.add_fieldsets + (
         (
             "Informações adicionais",
-            {"fields": ("cpf", "endereco", "nome_cidade", "nome_bairro")},
+            {"fields": ("cpf", "rua", "nome_cidade", "nome_bairro")},
         ),
     )
 
