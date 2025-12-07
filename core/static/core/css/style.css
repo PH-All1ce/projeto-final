@@ -82,7 +82,7 @@ body {
 }
 
 .car-card:hover { /*estilo quando o mouse passa por cima do card*/
-    transform: translateY(-5px); /*movimentação dos cards*/
+    transform: translateY(-5px); /*movimentação dos card quando passa o mouse*/
     box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 
