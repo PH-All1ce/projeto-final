@@ -1,9 +1,22 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib import messages
-from django.contrib.auth.models import Group
-from .models import Veiculo, Compra, StatusCredito
+from django.shortcuts import (
+    render,
+    redirect,
+    get_object_or_404,
+)  # renderizar templates | redirecionar para URLs | buscar objetos ou erro
+from django.contrib.auth import (
+    authenticate,
+    login,
+    logout,
+)  # verificar credencial | iniciar e encerrar sessão
+from django.contrib.auth.decorators import (
+    login_required,
+    permission_required,
+)  # restringe o acesso as views para logados/ com permissão
+from django.contrib import (
+    messages,
+)  # framework de mensagem (sucesso ou erro para o usuário)
+from django.contrib.auth.models import Group  # gerenciar grupos de usuários
+from .models import Veiculo, Compra, StatusCredito  # importa modelos
 from .forms import (
     VeiculoForm,
     LoginForm,
@@ -11,10 +24,11 @@ from .forms import (
     VeiculoFiltroForm,
     SaldoForm,
     PerfilEditForm,
-)
+)  # importa formulários
 from django.contrib.auth import logout
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator  # paginação
 
+# recebe as requisições, define a lógica da resposta e devolve as respostas adequadas
 
 # LOGIN LOGOUT REGISTRO EDITAR PERFIL
 
